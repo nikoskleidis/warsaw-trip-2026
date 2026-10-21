@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#b5462f">
+<title>Βαρσοβία 17–21/11/2026 · Πρόγραμμα</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{
+  --bg:#fbf6ef; --card:#ffffff; --ink:#2b2420; --muted:#6f625a; --line:#eadfd2;
+  --accent:#b5462f; --accent-2:#e08a3c; --accent-soft:#fbe6dc; --ok:#2f7d5b; --warn:#a15c00; --warn-soft:#fff1d6;
+  --food:#8a3ffc; --food-soft:#f1e8ff; --shadow:0 2px 10px rgba(80,50,30,.08);
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1b1715; --card:#26201d; --ink:#f3ebe4; --muted:#b9aba0; --line:#3b322d;
+    --accent:#ef7a5c; --accent-2:#f0a45c; --accent-soft:#3a2620; --ok:#6fcf9f; --warn:#f2b35a; --warn-soft:#3a2e1a;
+    --food:#b994ff; --food-soft:#2e2640; --shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  .leaflet-tile-pane{filter:brightness(.8) contrast(1.05) saturate(.8)}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+a{color:var(--accent);text-underline-offset:2px}
+h1,h2,h3{line-height:1.25;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px}
+header.hero{background:linear-gradient(135deg,#b5462f,#e08a3c);color:#fff;padding:22px 0 18px}
+header.hero h1{font-size:1.55rem}
+header.hero p{margin:.35rem 0 0;opacity:.95;font-size:.95rem}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{background:rgba(255,255,255,.2);border-radius:999px;padding:4px 10px;font-size:.82rem}
+.note{background:var(--warn-soft);border:1px solid var(--line);border-left:5px solid var(--accent-2);border-radius:12px;padding:10px 12px;margin:14px 0;font-size:.92rem}
+.note b{color:var(--ink)}
+.clock{font-size:.85rem;color:var(--muted);margin-top:4px}
+nav.tabs{position:sticky;top:0;z-index:1000;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.tabrow{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;max-width:760px;margin:0 auto;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;scroll-snap-align:start;min-height:48px;min-width:64px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:6px 12px;font:inherit;font-size:.9rem;line-height:1.15;cursor:pointer;text-align:center}
+.tab small{display:block;font-size:.72rem;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"] small{color:#ffe9df}
+section.panel{display:none;padding:14px 0 8px}
+section.panel.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+.daytitle{font-size:1.3rem}
+.daysub{color:var(--muted);margin:.2rem 0 .8rem;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;margin:12px 0}
+.card h3{font-size:1.08rem;margin-bottom:6px}
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline:before{content:"";position:absolute;left:72px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.timeline li{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:8px 0;position:relative}
+.timeline li:after{content:"";position:absolute;left:67px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:3px solid var(--accent-2)}
+.timeline li.meal:after{border-color:var(--food);background:var(--food)}
+.timeline li.key:after{border-color:var(--accent);background:var(--accent)}
+.t{font-weight:700;font-variant-numeric:tabular-nums;font-size:.85rem;padding-top:2px;color:var(--accent);word-break:keep-all}
+.what{font-size:.96rem}
+.what .tag{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-right:4px;vertical-align:1px}
+.meal .tag{background:var(--food-soft);color:var(--food)}
+.rest{border-left:6px solid var(--food)}
+.rest .kicker{font-size:.8rem;color:var(--food);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.rest h3 a{color:inherit}
+.stats{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.stat{background:var(--food-soft);border-radius:10px;padding:4px 9px;font-size:.85rem}
+.price{font-size:1.15rem;font-weight:700}
+.price small{font-weight:400;color:var(--muted);font-size:.85rem}
+dl.kv{margin:8px 0 0}
+dl.kv dt{font-weight:700;font-size:.85rem;color:var(--muted);margin-top:8px}
+dl.kv dd{margin:2px 0 0}
+dl.kv ul{margin:2px 0;padding-left:20px}
+.caveat{background:var(--warn-soft);border-radius:10px;padding:8px 10px;margin-top:10px;font-size:.92rem}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:10px 14px;border-radius:12px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:.95rem;border:0}
+.btn.alt{background:var(--card);color:var(--accent);border:1.5px solid var(--accent)}
+.btn.food{background:var(--food)}
+details.backup{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:0 14px;margin:10px 0}
+details.backup summary{cursor:pointer;min-height:48px;display:flex;align-items:center;font-weight:700;list-style:none}
+details.backup summary::-webkit-details-marker{display:none}
+details.backup summary:before{content:"＋";margin-right:8px;color:var(--accent)}
+details[open].backup summary:before{content:"－"}
+details.backup .inner{padding-bottom:12px;font-size:.95rem}
+.weather{border-left:6px solid #4b8bd6}
+.weather h3:before{content:"☔ "}
+.mapcard{padding:0;overflow:hidden}
+.maphead{padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.maphead h3{margin:0}
+#map{height:360px;width:100%;background:var(--accent-soft)}
+.maplist{list-style:none;margin:0;padding:6px 14px 12px;font-size:.92rem}
+.maplist li{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.maplist li a{white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+.mk{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.mk span{transform:rotate(45deg);font-size:15px;line-height:1}
+.leaflet-popup-content{font-size:14px;line-height:1.4}
+.leaflet-popup-content a.gm{display:inline-block;margin-top:6px;font-weight:700}
+.mapfallback{padding:16px 14px;color:var(--muted);font-size:.92rem}
+table.sum{width:100%;border-collapse:collapse;font-size:.9rem}
+table.sum th,table.sum td{text-align:left;padding:8px 6px;border-top:1px solid var(--line);vertical-align:top}
+table.sum th{font-size:.78rem;color:var(--muted);text-transform:uppercase}
+table.sum tr{cursor:pointer}
+.event h3 .when{font-weight:400;font-size:.85rem;color:var(--muted);display:block;margin-top:2px}
+.badge{display:inline-block;font-size:.74rem;padding:2px 8px;border-radius:999px;margin:2px 4px 2px 0;background:var(--accent-soft);color:var(--accent)}
+.badge.no{background:var(--warn-soft);color:var(--warn)}
+.badge.ok{background:rgba(47,125,91,.14);color:var(--ok)}
+.checklist{list-style:none;margin:0;padding:0}
+.checklist li{border-top:1px solid var(--line)}
+.checklist li:first-child{border-top:0}
+.checklist label{display:flex;gap:12px;align-items:flex-start;padding:12px 2px;cursor:pointer;min-height:52px}
+.checklist input{width:26px;height:26px;flex:0 0 26px;accent-color:var(--ok);margin:0}
+.checklist input:checked + span{text-decoration:line-through;color:var(--muted)}
+.progress{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 2px}
+.progress div{height:100%;background:var(--ok);width:0;transition:width .3s}
+.conv{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.conv input{font:inherit;width:120px;min-height:46px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.conv output{font-weight:700;font-size:1.1rem}
+footer{color:var(--muted);font-size:.8rem;padding:20px 0 40px;text-align:center}
+.swipehint{font-size:.78rem;color:var(--muted);text-align:center;margin:2px 0 0}
+.pager{display:flex;justify-content:space-between;gap:8px;margin:16px 0 4px}
+.pager button{flex:1;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:.92rem;cursor:pointer}
+.pager button:disabled{opacity:.35}
+@media (min-width:700px){#map{height:440px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>Βαρσοβία · 17–21 Νοεμβρίου 2026</h1>
+    <p>Πρόγραμμα για δύο οικογένειες: 4 ενήλικες και 3 παιδιά (10, 6,5 και 1 έτους με καρότσι).</p>
+    <div class="pills">
+      <span class="pill">🏠 Fashionable City Center Apartment</span>
+      <span class="pill">✈️ Άφιξη Τρ 17/11 14:15</span>
+      <span class="pill">✈️ Πτήση Σάβ 21/11 15:15</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="note">
+    🕐 <b>Όλες οι ώρες είναι ώρα Βαρσοβίας</b>, μία ώρα πίσω από την Ελλάδα.<br>
+    🌇 <b>Δύση ηλίου ~15:40</b> (15:41 στις 17/11, 15:36 στις 21/11). Μετά τις 16:00 είναι σκοτάδι, γι’ αυτό τα υπαίθρια είναι το πρωί.<br>
+    🔎 Πηγές ελέγχθηκαν στις <b>8 Οκτωβρίου 2026</b>. Ισοτιμία 4,37 zł ανά €, ποσά σε € στρογγυλεμένα.
+    <div class="clock" id="clock"></div>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="Μέρες">
+  <div class="tabrow" role="tablist" id="tabrow"></div>
+</nav>
+
+<main class="wrap" id="main">
+  <p class="swipehint">Σύρε δεξιά/αριστερά για να αλλάξεις μέρα</p>
+  <div id="panels"></div>
+
+  <div class="card mapcard" id="mapcard">
+    <div class="maphead">
+      <h3 id="maptitle">Χάρτης</h3>
+      <div class="legend">
+        <span><span class="dot" style="background:#b5462f"></span>Σπίτι</span>
+        <span><span class="dot" style="background:#e08a3c"></span>Δραστηριότητα</span>
+        <span><span class="dot" style="background:#8a3ffc"></span>Φαγητό</span>
+        <span><span class="dot" style="background:#4b8bd6"></span>Μετακίνηση</span>
+        <span><span class="dot" style="background:#8c8c8c"></span>Εφεδρικό</span>
+      </div>
+    </div>
+    <div id="map" role="region" aria-label="Χάρτης"></div>
+    <ul class="maplist" id="maplist"></ul>
+  </div>
+</main>
+
+<footer class="wrap">
+  Φτιαγμένο από το πρόγραμμα «warsaw-itinerary-final-el.md». Οι βαθμολογίες Google είναι από gdziezjescwarszawa.com ή restaurantguru.com, όχι απευθείας από το Google Maps. Ο χάρτης θέλει internet· όλα τα υπόλοιπα δουλεύουν offline. Χάρτης © OpenStreetMap contributors.
+</footer>
+
+<script>
+"use strict";
+/* ---------- Places (coordinates from OpenStreetMap / Nominatim) ---------- */
+var C = {home:"#b5462f", act:"#e08a3c", food:"#8a3ffc", move:"#4b8bd6", backup:"#8c8c8c"};
+var P = {
+  apt:{n:"Διαμέρισμα (Krucza 51, κατά προσέγγιση)", ll:[52.2312667,21.0157956], k:"home", i:"🏠", q:"Krucza 51, Warszawa",
+       d:"Fashionable City Center Apartment (Noclegi Renters). Η διεύθυνση Krucza 51 είναι από τρίτους ιστότοπους — επιβεβαιώστε τη στην κράτηση."},
+  airport:{n:"Αεροδρόμιο Chopin (WAW)", ll:[52.1630651,20.9708149], k:"move", i:"✈️", q:"Lotnisko Chopina, Warszawa", d:"Σταθμός Lotnisko Chopina για SKM S2/S3."},
+  srodm:{n:"Σταθμός Warszawa Śródmieście (SKM)", ll:[52.2294024,21.0075880], k:"move", i:"🚆", q:"Warszawa Śródmieście, stacja", d:"SKM S2 από/προς αεροδρόμιο, ~22′. Περίπου 600 μ. από το σπίτι."},
+  centrum:{n:"Μετρό Centrum (M1)", ll:[52.2304781,21.0103690], k:"move", i:"Ⓜ️", q:"Metro Centrum, Warszawa", d:"Περίπου 300 μ. από το σπίτι."},
+  wedel:{n:"Pijalnia Czekolady E. Wedel", ll:[52.2333859,21.0146763], k:"act", i:"☕", q:"Pijalnia Czekolady E. Wedel, Szpitalna 8, Warszawa", d:"Szpitalna 8, 240 μ. από το σπίτι. Ζεστή σοκολάτα."},
+  parksw:{n:"Φωτεινός κήπος, Park Świętokrzyski", ll:[52.2338214,21.0047204], k:"act", i:"✨", q:"Park Świętokrzyski, Warszawa", d:"Δωρεάν διαδραστικός κήπος φωτός, ~800 μ. Ακριβής ημερομηνία/ωράριο δεν ανακοινώθηκαν."},
+  stara:{n:"Stara Kamienica", ll:[52.2315864,21.0151612], k:"food", i:"🍽️", q:"Stara Kamienica, Widok 8, Warszawa", d:"Widok 8, ~55 μ. από το σπίτι. Δείπνο Τρ 17/11 17:30. ☎ +48 22 114 43 33"},
+  bambino:{n:"Bar Mleczny Bambino (εφεδρικό)", ll:[52.2267934,21.0175602], k:"backup", i:"🥣", q:"Bar Mleczny Bambino, Hoża 19, Warszawa", d:"Hoża 19, ~500 μ. Δευ–Παρ 8:00–20:00."},
+  kopernik:{n:"Κέντρο Επιστημών Copernicus", ll:[52.2417760,21.0286002], k:"act", i:"🔬", q:"Centrum Nauki Kopernik, Warszawa", d:"Τετ 18/11 9:15–12:45. Bzzz! για κάτω των 7."},
+  prodiz:{n:"Prodiż Warszawski", ll:[52.2252405,21.0120636], k:"food", i:"🍽️", q:"Prodiż Warszawski, Poznańska 16, Warszawa", d:"Poznańska 16, 716 μ. από το σπίτι. Μεσημεριανό σετ 45 zł. ☎ +48 22 127 71 71"},
+  prasowy:{n:"Bar Mleczny Prasowy Powiśle (εφεδρικό)", ll:[52.2391671,21.0285529], k:"backup", i:"🥣", q:"Bar Mleczny Prasowy Powiśle, Zajęcza 1A, Warszawa", d:"Zajęcza 1A, ~290 μ. από το Copernicus. Δευ–Παρ 9:00–19:00."},
+  harvest:{n:"Harvest, Elektrownia Powiśle (εφεδρικό)", ll:[52.2407740,21.0278317], k:"backup", i:"🍴", q:"Harvest, Elektrownia Powiśle, Dobra 42, Warszawa", d:"Dobra 42, 120 μ. από το Copernicus. Νέο (Ιούνιος 2026), λίγες κριτικές."},
+  pkin:{n:"Παλάτι Πολιτισμού (PKiN) / Plac Defilad", ll:[52.2317657,21.0057979], k:"act", i:"🏙️", q:"Pałac Kultury i Nauki, Warszawa",
+        d:"Ταράτσα 30ού ορόφου (10:00–20:00), Neon Museum (4ος όροφος), Teatr Lalka. Μπροστά, στο Plac Defilad, το Jarmark Warszawski από 20/11. ~680 μ. από το σπίτι."},
+  wilanow:{n:"Παλάτι του Wilanów", ll:[52.1650986,21.0904690], k:"act", i:"🏰", q:"Muzeum Pałacu Króla Jana III w Wilanowie", d:"Πέμπτη δωρεάν. Ταμείο 9:00–15:00, παλάτι 10:00–16:00, πάρκο 9:00–16:00."},
+  restwil:{n:"Restauracja Wilanów", ll:[52.1661419,21.0861267], k:"food", i:"🍽️", q:"Restauracja Wilanów, Stanisława Kostki Potockiego 27, Warszawa", d:"Potockiego 27, ~250 μ. από το παλάτι. ☎ +48 579 630 630"},
+  dawne:{n:"Dawne Smaki (εφεδρικό κέντρου)", ll:[52.2352252,21.0182082], k:"backup", i:"🍴", q:"Dawne Smaki, Nowy Świat 49, Warszawa", d:"Nowy Świat 49, ~470 μ. από το σπίτι. Καθημερινά 11:00–23:00. ☎ +48 22 465 83 20"},
+  wilenski:{n:"Μετρό Dworzec Wileński (M2)", ll:[52.2537771,21.0357972], k:"move", i:"Ⓜ️", q:"Dworzec Wileński, Warszawa", d:"3 στάσεις M2 από Świętokrzyska."},
+  zoo:{n:"Ζωολογικός κήπος", ll:[52.2591045,21.0209842], k:"act", i:"🦒", q:"Warszawskie ZOO, Ratuszowa 1/3, Warszawa", d:"Ratuszowa 1/3. Νοέμβριος 9:00–16:00, τελευταία είσοδος 15:00."},
+  rusalka:{n:"Bar Mleczny Rusałka", ll:[52.2525208,21.0305753], k:"food", i:"🍽️", q:"Bar Mleczny Rusałka, Floriańska 14, Warszawa", d:"Floriańska 14, ~900 μ. από τον ζωολογικό. ☎ +48 22 619 52 00"},
+  pyzy:{n:"Pyzy Flaki Gorące (εφεδρικό)", ll:[52.2530500,21.0409661], k:"backup", i:"🥟", q:"Pyzy Flaki Gorące, Brzeska 29/31, Warszawa", d:"Brzeska 29/31, Praga. Δευ–Σάβ 12:00–22:00."},
+  baj:{n:"Teatr Baj", ll:[52.2524956,21.0346245], k:"backup", i:"🎭", q:"Teatr Baj, Jagiellońska 28, Warszawa", d:"Jagiellońska 28, Praga. Παραστάσεις στα πολωνικά."}
+};
+
+/* ---------- Helpers ---------- */
+function gm(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
+function tel(num){return '<a class="btn food" href="tel:'+num.replace(/[^+\d]/g,"")+'">📞 '+num+'</a>';}
+function link(href,txt){return '<a href="'+href+'" target="_blank" rel="noopener">'+txt+'</a>';}
+
+/* ---------- Days ---------- */
+var DAYS = [
+{ id:"d17", tab:"Τρ 17", date:"2026-11-17", title:"Τρίτη 17/11 · Άφιξη, ήπια", sub:"Ζεστή σοκολάτα, μικρή βόλτα, δείπνο δίπλα στο σπίτι.",
+  places:["airport","srodm","apt","wedel","parksw","stara","bambino"],
+  tl:[
+   ["14:15","Προσγείωση στο Chopin (WAW). Με τις αποσκευές, έξοδος περίπου 14:45–15:00.","key"],
+   ["~15:00",'<span class="tag">🚆 μετακίνηση</span>Τρένο <b>SKM S2</b> από Lotnisko Chopina για <b>Warszawa Śródmieście</b>, περίπου 22 λεπτά, κάθε περίπου 30 λεπτά. Το S3 πάει στη Warszawa Centralna σε περίπου 21 λεπτά. Από το Śródmieście περίπου 600 μ. με τα πόδια ως το διαμέρισμα. Εναλλακτικά <b>δύο ταξί</b> (7 άτομα με αποσκευές δεν χωράνε σε ένα).'],
+   ["~15:45","Check-in. Η ώρα check-in δεν επιβεβαιώθηκε. Στις 15:41 δύει ο ήλιος."],
+   ["16:30–17:15","240 μ. ως την <b>Pijalnia E. Wedel</b> για ζεστή σοκολάτα. Αν έχει ανοίξει ο φωτεινός κήπος στο Park Świętokrzyski (800 μ.), είναι ωραία μικρή βόλτα. Αλλιώς αφήστε τον για την Παρασκευή."],
+   ["17:30",'<span class="tag">🍽️ φαγητό</span><b>Δείπνο: Stara Kamienica</b>, περίπου 55 μ. από το διαμέρισμα.',"meal"],
+   ["19:00","Σπίτι, νωρίς για ύπνο."]
+  ],
+  rest:{ kicker:"Δείπνο της ημέρας · 17:30", name:"Stara Kamienica", url:"https://stara-kamienica.com.pl/", addr:"Widok 8 · παραδοσιακή πολωνική με μοντέρνες πινελιές", place:"stara",
+    stats:["⭐ Google 4,6 από ~2.700 κριτικές","📍 ~55 μ. από το σπίτι","🕐 Καθημερινά 12:00–23:30","♿ προσβάσιμο σε αμαξίδιο (restaurantguru)"],
+    price:"420–550 zł", eur:"≈96–126 €", pnote:"για τους 7 · περίπου 90–110 zł ανά ενήλικα · χρέωση σέρβις 10% για λογαριασμούς πάνω από 150 zł",
+    why:"Στη γωνία από το διαμέρισμα, ιδανικό για βράδυ άφιξης. Αναφέρει ζωντανή μουσική.",
+    dishes:["<b>Staropolski żur na borowikach</b> (ξινή σούπα σίκαλης με μανιτάρια, λευκό λουκάνικο και αυγό, 38 zł)","<b>Mix wszystkich pierogów</b> (όλα τα πιερόγκι, 48 zł)","Για τα παιδιά: πιερόγκι με τυρί και πατάτα, ή ζωμό (rosół 34 zł) με χυλοπίτες","Schabowy (πανέ χοιρινή μπριζόλα) με πουρέ 49 zł · πιερόγκι 39–48 zł"],
+    caveat:"Το ακριβότερο γεύμα της λίστας. Το μενού στον ιστότοπο είναι του 2025, οι τιμές μπορεί να άλλαξαν. Τον τελευταίο μήνα υπάρχουν και κάποιες αρνητικές κριτικές, ανάμεσά τους μία που αναφέρει τροφική δηλητηρίαση.",
+    book:"Κράτηση συνιστάται για 7 άτομα. Ζητήστε χώρο για καρότσι και παιδικό κάθισμα.",
+    phones:["+48 22 114 43 33"], links:[["https://stara-kamienica.com.pl/?page_id=19","Μενού"],["https://pl.restaurantguru.com/Stara-Kamienica-Warsaw","restaurantguru"]] },
+  backups:[{t:"Εφεδρικό φαγητό: Bar Mleczny Bambino", h:'Hoża 19 / Krucza 21, περίπου 500 μ. · Google <b>4,3 από 5.642</b> κριτικές · Δευτέρα–Παρασκευή 8:00–20:00.<br>Κλασικό milk bar (λαϊκό εστιατόριο-καντίνα). Οι κριτικές μιλούν για περίπου 30 zł για δύο πιάτα με κομπόστα.<div class="caveat">⚠️ Ουρές, και κριτικές λένε ότι δεν έχει τουαλέτα.</div><p>'+link("https://barbambino.pl/","barbambino.pl")+' · '+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-bambino-hoza-19/","gdziezjescwarszawa")+'</p>'}],
+  weather:"Αν βρέξει ή αν είστε κουρασμένοι: μόνο η σοκολάτα και το δείπνο. Η απόσταση είναι λίγα μέτρα."
+},
+{ id:"d18", tab:"Τετ 18", date:"2026-11-18", title:"Τετάρτη 18/11 · Copernicus", sub:"Όλη η μέρα σε κλειστό χώρο.",
+  places:["apt","centrum","kopernik","prodiz","pkin","prasowy","harvest"],
+  tl:[
+   ["8:45",'<span class="tag">Ⓜ️ μετακίνηση</span>Μετρό <b>M1</b> από Centrum (περίπου 300 μ.) για <b>Świętokrzyska</b> (1 στάση). Αλλαγή στο <b>M2</b> για <b>Centrum Nauki Kopernik</b> (2 στάσεις). Χρησιμοποιήστε τους ανελκυστήρες. Πόρτα-πόρτα περίπου 20–25 λεπτά (εκτίμηση).'],
+   ["9:15–12:45",'<b>Copernicus.</b> Αγοράστε εισιτήρια online για ώρα 9:30 (μπαίνετε από 30′ πριν ως 60′ μετά). <b>Χωριστείτε:</b> ένας ενήλικας στο <b>Bzzz!</b> με το 6,5χρονο και το μωρό (κάθε ώρα στο :00, 45 λεπτά, το καρότσι μένει στην είσοδο). Οι άλλοι με τον 10χρονο στις μεγάλες εκθέσεις. Μετά αλλάζετε. <b>Δεν επιτρέπεται επανείσοδος</b>, οπότε σνακ μέσα στους ειδικούς χώρους.<br>💶 Περίπου <b>260 zł (≈60 €)</b>: 4×48 + 2×34, το μωρό δωρεάν. '+link("https://www.kopernik.org.pl/en/visit/opening-hours","Ωράριο")+' · '+link("https://www.kopernik.org.pl/wizyta/ceny-biletow","Τιμές"),"key"],
+   ["12:45–13:15",'<span class="tag">🚕 μετακίνηση</span>Ταξί περίπου 10 λεπτά (εκτίμηση), ή M2 ως Świętokrzyska και περίπου 1 χλμ με τα πόδια. Το μωρό μπορεί να κοιμηθεί στο καρότσι.'],
+   ["13:15–14:30",'<span class="tag">🍽️ φαγητό</span><b>Μεσημεριανό: Prodiż Warszawski</b>, σετ ημέρας. 716 μ. από το διαμέρισμα.',"meal"],
+   ["14:45–16:30","Διαμέρισμα, ύπνος και ξεκούραση."],
+   ["16:45–17:45","Προαιρετικά <b>Neon Museum</b> (PKiN, 680 μ.). Ταιριάζει στα 6,5 και 10, το μωρό απλώς κοιτάζει. Την Τετάρτη ήταν 11:00–18:00 στον έλεγχο της 4/10."],
+   ["Βράδυ","Ελαφρύ φαγητό στο σπίτι."]
+  ],
+  rest:{ kicker:"Μεσημεριανό της ημέρας · 13:15", name:"Prodiż Warszawski", url:"https://prodizwarszawski.pl/obiady/", addr:"Poznańska 16 · μοντέρνα πολωνική κουζίνα", place:"prodiz",
+    stats:["⭐ Google 4,6 από 2.483 κριτικές","📍 716 μ. από το σπίτι","🕐 Τετάρτη 12:00–23:00","🥣 Σετ Δευ–Παρ 12:00–16:00"],
+    price:"300–360 zł", eur:"≈69–82 €", pnote:"για τους 7 · 4 σετ ενηλίκων (180 zł), 1–2 σετ για τα παιδιά και ποτά (λεμονάδα 29 zł)",
+    why:"«Obiad Klasyczny» στα 45 zł (σούπα, κυρίως και επιδόρπιο): ο πιο φθηνός τρόπος να φάτε ποιοτική πολωνική κουζίνα. Μετά πάτε κατευθείαν για ύπνο. Το polandbestrestaurants αναφέρει παιδικό μενού (μη επιβεβαιωμένο).",
+    dishes:["Το σετ ημέρας: το μενού βγαίνει κάθε εβδομάδα, για 18/11 δεν είναι γνωστό. Ενδεικτικά, την Τετάρτη 7/10: σούπα λαχανικών, χοιρινή πανσέτα ψημένη στο prodiż με πουρέ, ζεστή μηλόπιτα.","Από τον κατάλογο: <b>gołąbki</b> (λαχανοντολμάδες) με μοσχάρι και μανιτάρια, 59 zł","<b>Πιερόγκι με μοσχάρι και borowiki</b> (μανιτάρια βασιλικά), 49 zł για 4 τεμάχια"],
+    caveat:"Είναι <b>σε υπόγειο</b> («zabytkowe podziemie»): σκαλιά με το καρότσι. Μία κριτική το λέει «στενό». Ο κατάλογος είναι ακριβός (schabowy 69 zł) — η αξία είναι στο σετ, που ισχύει μόνο ως τις 16:00.",
+    book:"Κράτηση: ναι. Ρωτήστε για παιδικό κάθισμα και πρόσβαση με καρότσι.",
+    phones:["+48 22 127 71 71"], email:"rezerwacje@prodizwarszawski.pl",
+    links:[["https://prodizwarszawski.pl/","Site"],["https://prodizwarszawski.pl/en/menu-eng/","Μενού (EN)"],["https://gdziezjescwarszawa.com/miejsca/prodiz-warszawski-poznanska-16/","gdziezjescwarszawa"]] },
+  backups:[
+   {t:"Εφεδρικό δίπλα στο Copernicus: Bar Mleczny Prasowy Powiśle", h:'Zajęcza 1A, περίπου 290 μ. · Google <b>4,2 από 875</b> κριτικές · Δευτέρα–Παρασκευή 9:00–19:00.<br>Μοντέρνο milk bar. Οι κριτικές επαινούν τα πιερόγκι, τη ντοματόσουπα και τα racuchy (τηγανίτες με μήλο).<div class="caveat">⚠️ Η ποιότητα ποικίλλει και ο χώρος είναι στενός.</div><p>'+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-prasowy-powisle-zajecza-1a-u1/","gdziezjescwarszawa")+'</p>'},
+   {t:"Εναλλακτικά: Harvest (Elektrownia Powiśle)", h:'Dobra 42, 120 μ. από το Copernicus. Μοντέρνα πολωνική κουζίνα και γωνιά για παιδιά. Κυρίως πιάτα 39–129 zł.<div class="caveat">⚠️ Άνοιξε τον Ιούνιο του 2026 και έχει λίγες κριτικές.</div><p>'+link("https://warszawa.naszemiasto.pl/tradycyjna-kuchnia-w-nowoczesnej-odslonie-nowa-restauracja-w-elektrowni-powisle/ar/c17p2-29083761","Nasze Miasto")+' · '+link("https://elektrowniapowisle.com/restaurants/harvest/","Elektrownia")+'</p>'}
+  ],
+  weather:"Η μέρα είναι ήδη σε κλειστό χώρο. <b>Αν δεν βρείτε εισιτήρια για το Copernicus:</b> αλλάξτε με την Παρασκευή, που είναι ανοιχτό ως τις 20:00. Αλλιώς Neon Museum και ταράτσα PKiN."
+},
+{ id:"d19", tab:"Πέμ 19", date:"2026-11-19", title:"Πέμπτη 19/11 · Wilanów", sub:"Παλάτι και πάρκο, δωρεάν την Πέμπτη. Επιστροφή πριν σκοτεινιάσει.",
+  places:["apt","wilanow","restwil","pkin","dawne"],
+  tl:[
+   ["9:15",'<span class="tag">🚌 μετακίνηση</span>Λεωφορείο <b>116 ή 180</b> από τη στάση <b>Foksal</b> (Nowy Świat, περίπου 450 μ.) ή <b>Pl. Trzech Krzyży</b> ως το τέρμα <b>«Wilanów»</b>, δίπλα στο παλάτι. Περίπου 19 στάσεις, <b>περίπου 35–40 λεπτά (εκτίμηση)</b>. Δείτε το Jakdojade. Εναλλακτικά δύο ταξί, περίπου 20–25 λεπτά (εκτίμηση).'],
+   ["10:00",'Ταμείο, στο κίτρινο κτίριο μπροστά στο παλάτι: πάρτε <b>δωρεάν εισιτήρια</b> (wejściówki) για πάρκο και παλάτι. Πηγαίνετε νωρίς, τα εισιτήρια για το παλάτι είναι περιορισμένα. '+link("https://wilanow-palac.pl/bilety","Εισιτήρια")+' · '+link("https://wilanow-palac.pl/en/opening-hours","Ωράριο"),"key"],
+   ["10:15–12:15",'<b>Χωριστείτε.</b> Οι νονοί μπαίνουν στο παλάτι με τον 10χρονο. Το 6,5χρονο ακολουθεί αν θέλει (παιδική διαδρομή στον ακουστικό οδηγό, 14 zł). Οι γονείς μένουν με το μωρό στο πάρκο. Μετά αλλάζετε για λίγο. Καρότσι δεν επιτρέπεται στο παλάτι· υπάρχει μάρσιπος από το βεστιάριο ('+link("https://wilanow-palac.pl/en/visiting-with-a-child","επίσκεψη με παιδί")+').'],
+   ["12:30–14:00",'<span class="tag">🍽️ φαγητό</span><b>Restauracja Wilanów</b> (Potockiego 27, περίπου 250 μ.). Το μωρό κοιμάται στο καρότσι.',"meal"],
+   ["14:00–15:15","Πάρκο ή αυλή (το πάρκο κλείνει 16:00, τελευταία είσοδος 15:30). Για ζεστό ρόφημα, η <b>Allegato Café</b> στην αυλή είναι ανοιχτή Δευτέρα–Παρασκευή 9:00–17:30."],
+   ["15:30",'<span class="tag">🚌 μετακίνηση</span>Λεωφορείο για επιστροφή. Σπίτι περίπου 16:15.'],
+   ["Βράδυ","Ξεκούραση. Αν ο Βασιλικός Κήπος Φωτός ανακοινωθεί και φέτος, εναλλακτικά μένετε ως τις 16:00–17:00, με κόστος έναν πιο κουρασμένο μπέμπη."]
+  ],
+  rest:{ kicker:"Μεσημεριανό της ημέρας · 12:30", name:"Restauracja Wilanów", url:"https://restauracjawilanow.pl/menu/", addr:"Stanisława Kostki Potockiego 27 · παραδοσιακή πολωνική απέναντι από το παλάτι", place:"restwil",
+    stats:["⭐ Google 4,4 από 1.143 κριτικές","📍 ~250 μ. από το παλάτι","🕐 Πέμπτη 12:00–21:00","♿ προσβάσιμο σε αμαξίδιο (restaurantguru)"],
+    price:"400–520 zł", eur:"≈92–119 €", pnote:"για τους 7",
+    why:"Τόσο κοντά στο παλάτι που ο ύπνος του μωρού συμπίπτει με το φαγητό.",
+    dishes:["<b>Staropolskie pierogi z dzikiego ptactwa</b> (πιερόγκι από φασιανό, χήνα, πάπια), 37 zł","<b>Żur staropolski</b>, 31 zł","Επιδόρπιο: <b>knedle ze śliwkami</b> (ζυμαρένια μπαλάκια με δαμάσκηνα), 28 zł","Πιερόγκι με καπνιστό τυρί 34 zł · schabowy με πουρέ και mizeria 52 zł · ζωμός με kołduny 32 zł","Για τα παιδιά: κοτόπουλο bbq με πατάτες 49 zł"],
+    caveat:"Οι κριτικές αναφέρουν πού και πού αργή εξυπηρέτηση. Δεν υπάρχει ξεχωριστό παιδικό μενού.",
+    book:"Κράτηση: ναι. Ζητήστε χώρο για καρότσι και παιδικό κάθισμα.",
+    phones:["+48 579 630 630"], email:"rezerwacje@restauracjawilanow.pl",
+    links:[["https://restauracjawilanow.pl/","Site"],["https://restaurantguru.com/Restauracja-Wilanow-Warsaw","restaurantguru"]] },
+  backups:[
+   {t:"Ελαφρύ φαγητό: Allegato Café (αυλή παλατιού)", h:'Δευτέρα–Παρασκευή 9:00–17:30. <a class="btn food" href="tel:+48602688399">📞 602 688 399</a><p>'+link("https://wilanow-palac.pl/en/opening-hours","Ωράριο")+'</p>'},
+   {t:"Αν η μέρα μεταφερθεί στο κέντρο: Dawne Smaki", h:'Nowy Świat 49, περίπου 470 μ. από το σπίτι. Παραδοσιακή κουζίνα, καθημερινά 11:00–23:00. Google <b>4,2 από 1.294</b> σύμφωνα με τα Orły Gastronomii.<div class="caveat">⚠️ Χαμηλότερη βαθμολογία και τιμές που δεν ελέγχθηκαν.</div><div class="btns"><a class="btn food" href="tel:+48224658320">📞 +48 22 465 83 20</a></div><p>'+link("https://dawnesmaki.eatbu.com/?lang=en","Site")+' · '+link("https://www.orlygastronomii.pl/profile-284563-dawne-smaki-kulinarne-tradycje-polski","Orły Gastronomii")+'</p>'}
+  ],
+  weather:"<b>Αν φυσάει πολύ (κλείνει το πάρκο) ή πέφτει βροχή με αέρα:</b> μείνετε στο κέντρο. Ταράτσα PKiN το πρωί, ή <b>Teatr Lalka στις 11:30</b> «Śpiąca królewna» (στα πολωνικά), Neon Museum, και φαγητό στο Dawne Smaki (εφεδρικό)."
+},
+{ id:"d20", tab:"Παρ 20", date:"2026-11-20", title:"Παρασκευή 20/11 · Ζωολογικός & χριστουγεννιάτικη αγορά", sub:"Ζωολογικός το πρωί, milk bar, ύπνος, και η πρώτη μέρα του Jarmark το βράδυ.",
+  places:["apt","centrum","wilenski","zoo","rusalka","pyzy","pkin","parksw","kopernik"],
+  tl:[
+   ["8:30",'<span class="tag">Ⓜ️ μετακίνηση</span><b>M1</b> Centrum → Świętokrzyska, αλλαγή <b>M2</b> → <b>Dworzec Wileński</b> (3 στάσεις). Από εκεί τραμ ως <b>Park Praski / Ratuszowa-ZOO</b>, ή 10–15 λεπτά με τα πόδια μέσα από το Park Praski ('+link("https://zoo.waw.pl/wizyta-w-zoo/dojazdy","πρόσβαση")+').'],
+   ["9:00–11:45",'<b>Ζωολογικός.</b> Υπολογίστε περίπου 2,5 ώρες. Χρησιμοποιήστε τα κλειστά κτίρια για ζέσταμα (ποια είναι ανοιχτά δεν ελέγχθηκε).<br>💶 Κάθε οικογένεια βγάζει οικογενειακό 3 ατόμων (90 zł) και το μωρό 1 zł: σύνολο περίπου <b>181 zł (≈41 €)</b>. '+link("https://zoo.waw.pl/wizyta-w-zoo/bilety","Τιμές")+' · '+link("https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο"),"key"],
+   ["12:00–13:00",'<span class="tag">🍽️ φαγητό</span><b>Bar Mleczny Rusałka</b> (Floriańska 14), περίπου 900 μ. ή 12 λεπτά με τα πόδια.',"meal"],
+   ["13:15–14:00",'<span class="tag">Ⓜ️ μετακίνηση</span>M2 Dworzec Wileński → Świętokrzyska, μετά σπίτι. <b>Ύπνος.</b>'],
+   ["16:30–18:30",'<b>Πρώτη μέρα του Jarmark Warszawski</b> (Plac Defilad, 680 μ., την Παρασκευή ως τις 22:00), μαζί με τον <b>φωτεινό κήπο</b> στο διπλανό Park Świętokrzyski. Ένας γύρος, καρουζέλ αν λειτουργεί, ζεστό για τους μεγάλους, βραδινό από τα περίπτερα. Συμφωνήστε σημείο συνάντησης στην άκρη της πλατείας, γιατί θα έχει κόσμο.',"key"]
+  ],
+  rest:{ kicker:"Μεσημεριανό της ημέρας · 12:00", name:"Bar Mleczny Rusałka", url:"https://gdziezjescwarszawa.com/miejsca/bar-mleczny-rusalka-florianska-14/", addr:"Floriańska 14, Praga · αυθεντικό milk bar", place:"rusalka",
+    stats:["⭐ Google 4,3 από 2.527 κριτικές","📍 ~900 μ. από τον ζωολογικό","🕐 Δευ–Σάβ 9:00–17:00 (Παρ ίσως ως 16:30)","💸 το φθηνότερο της εβδομάδας"],
+    price:"150–200 zł", eur:"≈34–46 €", pnote:"για τους 7 · ενδεικτικά (κριτική χωρίς ημερομηνία): schabowy 15,50 zł, naleśniki 12 zł, κομπόστα 2,50 zł",
+    why:"Κριτικές το προτείνουν ρητά «μετά τον ζωολογικό». Η πιο φθηνή και αυθεντική πολωνική εμπειρία της εβδομάδας, με σκηνικό από την εποχή του κομμουνισμού.",
+    dishes:["<b>Gołąbek w sosie pomidorowym</b> (λαχανοντολμάς σε σάλτσα ντομάτας)","<b>Naleśniki z serem</b> (κρέπες με τυρί) — σίγουρη επιλογή για τα παιδιά"],
+    caveat:"Παραγγέλνετε στο ταμείο, το μενού είναι μόνο στα πολωνικά και περιορισμένο, θέλει υπομονή. Ώρα αιχμής σημαίνει ουρά και λίγα τραπέζια. Κάποιες κριτικές μιλούν για απότομο προσωπικό.",
+    book:"Κράτηση δεν γίνεται, είναι αυτοεξυπηρέτηση. Πηγαίνετε στις 12:00.",
+    phones:["+48 22 619 52 00"], links:[] },
+  backups:[
+   {t:"Εφεδρικό: Pyzy Flaki Gorące", h:'Brzeska 29/31, Praga · Δευτέρα–Σάββατο 12:00–22:00. Πύζες (πατατοκεφτέδες) και flaki (πατσάς) σε ρετρό στιλ.<div class="caveat">⚠️ Οι τιμές υπάρχουν μόνο στις online παραγγελίες ή στο Facebook. Η βαθμολογία δεν επαληθεύτηκε. Ο χώρος πιθανότατα είναι μικρός για 7 άτομα με καρότσι (δεν επιβεβαιώθηκε).</div><div class="btns"><a class="btn food" href="tel:+48606294499">📞 606 294 499</a></div><p>'+link("https://www.pyzyflakigorace.pl/menu-brzeska/","Μενού")+'</p>'},
+   {t:"Βραδινό: περίπτερα του Jarmark", h:'Στο Jarmark υπάρχουν περίπτερα φαγητού (dzis.app). Οι τιμές του 2026 θα βγουν την ημέρα έναρξης.'}
+  ],
+  weather:"<b>Αν βρέχει πολύ:</b> μικρότερη επίσκεψη στον ζωολογικό, ή Copernicus, που την Παρασκευή είναι ανοιχτό ως τις 20:00. Την αγορά την κόβετε σε 30–40 λεπτά."
+},
+{ id:"d21", tab:"Σάβ 21", date:"2026-11-21", title:"Σάββατο 21/11 · Αναχώρηση", sub:"Πρωινό κοντά στο σπίτι, μετά αεροδρόμιο για την πτήση των 15:15.",
+  places:["apt","pkin","srodm","airport"],
+  tl:[
+   ["8:30–9:45","Πρωινό και βαλίτσες. <b>Ρωτήστε τον οικοδεσπότη για ώρα check-out και φύλαξη αποσκευών.</b>"],
+   ["10:00–10:45",'<b>Ταράτσα PKiN</b>, 30ός όροφος (680 μ., ανοίγει 10:00, χωρίς κρατήσεις). Κανονικό 30 zł, μειωμένο 25 zł (από αναζήτηση). '+link("https://pkin.pl/o-tarasie-widokowym/","pkin.pl"),"key"],
+   ["11:00–11:40","<b>Jarmark</b> τη μέρα (ανοίγει 11:00), ένα καρουζέλ αν δουλεύει."],
+   ["12:00","Επιστροφή, παίρνετε τις βαλίτσες."],
+   ["12:15–12:30",'<span class="tag">🚆 μετακίνηση</span>Φεύγετε: <b>SKM S2</b> από Warszawa Śródmieście (600 μ.) για Lotnisko Chopina, περίπου 22 λεπτά, κάθε περίπου 30 λεπτά. Ή δύο ταξί.',"key"],
+   ["~13:00","Στο αεροδρόμιο για την πτήση των 15:15."]
+  ],
+  rest:null, norest:"Σήμερα δεν υπάρχει γεύμα σε εστιατόριο, όπως ζήτησες.",
+  backups:[],
+  weather:"Δεν υπάρχει ξεχωριστό εφεδρικό για σήμερα. Ταράτσα PKiN και αγορά είναι 680 μ. από το σπίτι, οπότε κόβετε ό,τι χρειαστεί και γυρίζετε για τις βαλίτσες."
+}
+];
+
+/* ---------- Events ---------- */
+var EVENTS = [
+ {t:"Jarmark Warszawski (2η χρονιά)", w:"Plac Defilad, μπροστά στο PKiN · ανοίγει Παρ 20/11/2026 11:00, ως 6/1/2027", b:[["ok","Είσοδος ελεύθερη"],["ok","Όλες οι ηλικίες"],["","Στο πρόγραμμα: Παρ 20 & Σάβ 21"]],
+  h:'Ωράριο στη σελίδα του διοργανωτή: Δευτέρα–Πέμπτη 11:00–21:00, <b>Παρασκευή–Σάββατο 11:00–22:00</b>, Κυριακή 11:00–21:00. Το dzis.app αναφέρει περίπτερα φαγητού, συναυλίες στη σκηνή, εργαστήρια, καρουζέλ, ρόδα και υπαίθριο σινεμά. Δεν βρέθηκε επίσημη τελετή έναρξης ή φωταγώγησης· το Miejscownik γράφει ότι οι τιμές και το πρόγραμμα του 2026 θα βγουν την ημέρα έναρξης.<div class="caveat">⚠️ Οι εξαιρέσεις ωραρίου στη σελίδα του διοργανωτή έχουν ακόμα ημερομηνίες του 2025.</div>',
+  l:[["https://www.jarmark.waw.pl/","jarmark.waw.pl"],["https://pik.warszawa.pl/inne/jarmark-bozonarodzeniowy-w-warszawie/","PIK Warszawa"],["https://dzis.app/wydarzenia/jarmark-bozonarodzeniowy-2026-w-warszawie-na-placu-defilad-plac-defilad-warszawa-2026-11-20","dzis.app"],["https://miejscownik.pl/blog/jarmark-bozonarodzeniowy-warszawa","Miejscownik"]]},
+ {t:"Φωτεινός κήπος στο Park Świętokrzyski", w:"Βόρεια πλευρά του PKiN, ~800 μ. από το σπίτι", b:[["ok","Δωρεάν"],["","Ιδανικό για 6,5 & 10 μετά τις 16:00"],["no","Χωρίς ακριβή ημερομηνία/ωράριο"]],
+  h:'Διαδραστικός κήπος φωτός όλο τον χρόνο: φωτεινά λουλούδια και πεταλούδες και ένα δρομάκι περίπου 50 μ. όπου οι εικόνες στο έδαφος αλλάζουν με την κίνηση. Η πόλη ανακοίνωσε άνοιγμα στα μέσα Οκτωβρίου 2026, χωρίς ακριβή ημερομηνία ή ωράριο. Ταιριάζει με την αγορά της Παρασκευής.',
+  l:[["https://wot.waw.pl/project/tej-zimy-warszawa-opowie-swoja-historie-swiatlem-co-nowego-w-swiatecznej-iluminacji/","WOT"],["https://www.werandaweekend.pl/dzieje-sie/nowa-atrakcja-w-centrum-warszawy-park-swietokrzyski-zamieni-sie-w-interaktywny-ogrod-swiatla","WerandaWeekend"],["https://stooq.pl/n/?c=1&f=1826585&p=0","PAP/Stooq"]]},
+ {t:"Teatr Lalka: «Śpiąca królewna» (Η Ωραία Κοιμωμένη)", w:"Μέσα στο PKiN · Τετ 18, Πέμ 19, Παρ 20/11 9:30 & 11:30 · Σάβ 21/11 12:00 & 17:00", b:[["no","Στα πολωνικά"],["","4+ · 50′"],["","Εφεδρικό κακοκαιρίας Πέμπτης"]],
+  h:'Κλασικό κουκλοθέατρο με τραγούδια, 50 λεπτά χωρίς διάλειμμα. Στις 8/10 η παράσταση της Τετάρτης 11:30 είχε 123 ελεύθερες θέσεις. Τιμή από αναζήτηση: 60 zł κανονικό, 55 zł μειωμένο (επιβεβαιώστε). Οι πρωινές παραστάσεις καθημερινής είναι συνήθως για σχολεία.',
+  l:[["https://teatrlalka.pl/pl/spektakle/spiaca-krolewna","Παράσταση"],["https://bilety.teatrlalka.pl/rezerwacja/terminy.html?id=82","Εισιτήρια"],["https://teatrlalka.pl/pl/bilety","Τιμές"]]},
+ {t:"Teatr Baj (Praga, Jagiellońska 28)", w:"«Hokus Pokus, Czary Mary… i Król» (5+) Πέμ 19 & Παρ 20/11 10:00, Σάβ 21/11 17:00 · «Niesamowite przygody Skarpetek» (5+, 1 ώρα) Τρ 17/11 10:00 & 12:00, Τετ 18/11 10:00", b:[["no","Στα πολωνικά"],["no","Συμπίπτει με τον ζωολογικό — εκτός προγράμματος"]],
+  h:'Κοντά στον ζωολογικό.', l:[["https://teatrbaj.pl/repertuar/","Πρόγραμμα θεάτρου"]]},
+ {t:"Κέντρο Επιστημών Copernicus", w:"Δευ–Πέμ 9:00–18:00 · Παρ 9:00–20:00 (ταμεία κλείνουν 1 ώρα νωρίτερα)", b:[["","Στο πρόγραμμα: Τετ 18"]],
+  h:'Ο κήπος στην ταράτσα είναι κλειστός Νοέμβριο–Απρίλιο. Το πλανητάριο ανοίγει ξανά μετά την ανακαίνιση από 12/10· την Τετάρτη λειτουργεί 9:00–18:30. Τιμές καθημερινής: κανονικό <b>48 zł</b>, μειωμένο <b>34 zł</b> (μαθητές ως 19 ετών, με έγγραφο), κάτω των 2 δωρεάν. Ταινία πλανηταρίου 34/24 zł. <b>Bzzz!</b> μόνο για παιδιά κάτω των 7, πάντα με ενήλικα. Ειδική εκδήλωση δεν βρέθηκε για εκείνη την εβδομάδα.',
+  l:[["https://www.kopernik.org.pl/en/visit/opening-hours","Ωράριο"],["https://www.kopernik.org.pl/wizyta/ceny-biletow","Τιμές"]]},
+ {t:"Παλάτι του Wilanów: η Πέμπτη είναι δωρεάν", w:"Ταμείο 9:00–15:00 · Παλάτι 10:00–16:00 (τελ. είσοδος 15:00) · Πάρκο 17/10–31/12: 9:00–16:00 (τελ. είσοδος 15:30)", b:[["ok","Δωρεάν Πέμπτη"],["","Στο πρόγραμμα: Πέμ 19"],["no","Με δυνατό αέρα κλείνει το πάρκο"]],
+  h:'Κάθε Πέμπτη η είσοδος σε παλάτι, κήπους και πάρκο είναι δωρεάν, με εισιτήρια (wejściówki) από το ταμείο. Τα εισιτήρια για το παλάτι είναι περιορισμένα. Καρότσι δεν επιτρέπεται μέσα στο παλάτι· μάρσιπος από το βεστιάριο.',
+  l:[["https://wilanow-palac.pl/bilety","Εισιτήρια"],["https://wilanow-palac.pl/en/opening-hours","Ωράριο"],["https://wilanow-palac.pl/en/visiting-with-a-child","Επίσκεψη με παιδί"]]},
+ {t:"Ζωολογικός κήπος (Ratuszowa 1/3)", w:"Νοέμβριος 9:00–16:00, τελευταία είσοδος 15:00", b:[["","Στο πρόγραμμα: Παρ 20"]],
+  h:'Τα ταμεία κλείνουν μία ώρα νωρίτερα. Χειμερινές τιμές: κανονικό 35 zł, μειωμένο 30 zł (παιδιά από 3 ετών). <b>Οικογενειακό: 30 zł το άτομο</b>, για τουλάχιστον 3 άτομα, με το πολύ 2 ενήλικες και παιδιά ως 16. Παιδιά 0–3 ετών 1 zł.',
+  l:[["https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο"],["https://zoo.waw.pl/wizyta-w-zoo/bilety","Τιμές"]]},
+ {t:"Ταράτσα θέας PKiN, 30ός όροφος", w:"Καθημερινά 10:00–20:00 · χωρίς κρατήσεις", b:[["","Στο πρόγραμμα: Σάβ 21"],["no","Τιμή μικρών παιδιών ανεπιβεβαίωτη"]],
+  h:'Σύμφωνα με αναζήτηση, κανονικό 30 zł και μειωμένο 25 zł.', l:[["https://pkin.pl/o-tarasie-widokowym/","pkin.pl"]]},
+ {t:"Neon Museum (PKiN, 4ος όροφος)", w:"Ανελκυστήρας από το επίπεδο −1 · Δευ & Κυρ 11:00–18:00, Παρ 11:00–19:00", b:[["","Προαιρετικό: Τετ 18"],["no","Ωράριο Τρ–Πέμ ανεπιβεβαίωτο"]],
+  h:'Τιμές: 25 zł κανονικό, 18 zł μειωμένο, κάτω των 6 δωρεάν. Τρίτη–Πέμπτη η σελίδα δεν έδειξε ώρες στις 8/10· στις 4/10 η Τετάρτη έδειχνε 11:00–18:00.', l:[["https://www.neonmuzeum.org/visit-museum","neonmuzeum.org"]]},
+ {t:"Pijalnia Czekolady E. Wedel (Szpitalna 8)", w:"Δευτέρα–Σάββατο 9:00–22:00 (δευτερεύουσα πηγή — ελέγξτε το)", b:[["","Στο πρόγραμμα: Τρ 17"]],
+  h:'Το ιστορικό σοκολατοπωλείο της Wedel, 240 μ. από το διαμέρισμα. Ζεστή σοκολάτα για καλωσόρισμα.', l:[["https://gdziezjescwarszawa.com/miejsca/pijalnia-czekolady-e-wedel-szpitalna-8/","gdziezjescwarszawa"],["https://wedelpijalnie.pl/lokale","Επίσημη σελίδα"]]}
+];
+var NOT_IN = [
+ '<b>Χριστουγεννιάτικος φωτισμός της πόλης</b> (Βασιλική Οδός, Παλιά Πόλη, έλατο 21 μ. στο Plac Centralny, mapping στο Pałac Staszica): η πόλη λέει αρχές Δεκεμβρίου. <b>Δεν θα είναι αναμμένος στις 17–21/11.</b> '+link("https://wot.waw.pl/project/tej-zimy-warszawa-opowie-swoja-historie-swiatlem-co-nowego-w-swiatecznej-iluminacji/","WOT")+' · '+link("https://radiokolor.pl/miejskie-legendy-interaktywne-ozdoby-i-znani-polacy-tak-bedzie-wygladac-nowa-iluminacja-swiateczna-galeria/","Radio Kolor"),
+ '<b>Królewski Ogród Światła (Wilanów):</b> πέρυσι 18/10/2025–1/3/2026, τον Νοέμβριο 16:00–21:00, Δευ–Πέμ 35/25 zł, παιδιά ως 6 δωρεάν. Για το 2026/27 δεν υπάρχει ανακοίνωση («η τελευταία έκδοση σε αυτή τη μορφή»). Αν ανακοινωθεί, ταιριάζει την Πέμπτη στις 16:00. '+link("https://wilanow-palac.pl/wystawa/krolewski-ogrod-swiatla","wilanow-palac.pl"),
+ '<b>Αγορά στην Παλιά Πόλη / Barbakan:</b> οι ημερομηνίες του 2026 δεν έχουν ανακοινωθεί (πέρυσι 21 ή 22/11/2025). '+link("https://pik.warszawa.pl/inne/jarmark/jarmark-bozonarodzeniowy-na-barbakanie/","PIK"),
+ '<b>Παγοδρόμια:</b> Παλιά Πόλη πέρυσι άνοιξε 3/12/2025 ('+link("https://sport.um.warszawa.pl/waw/aktywna-warszawa/rynek-starego-miasta","Aktywna Warszawa")+'). Zimowy Narodowy: δεν βρέθηκε ανακοινωμένη σεζόν ('+link("https://www.pgenarodowy.pl/aktualnosci/11189,znamy-date-startu-zimowego-narodowego","pgenarodowy.pl")+'). Στο Jarmark δεν αναφέρεται παγοδρόμιο.',
+ '<b>Ημέρα Ανεξαρτησίας</b> (11/11) και <b>Andrzejki</b> (29–30/11): πριν και μετά το ταξίδι.',
+ '<b>Οικογενειακή συναυλία</b> της Φιλαρμονικής: δεν βρέθηκε. <b>Guliwer</b>: ελέγχθηκε μόνο ο Οκτώβριος.',
+ '<b>Ημερήσια εκδρομή με τρένο: δεν προτείνεται.</b> Δεν βρέθηκε προορισμός με απευθείας τρένο, ανοιχτός τον Νοέμβριο και κατάλληλος για 1, 6,5 και 10 ετών, που να δικαιολογεί 2–3 ώρες τρένου με μωρό (το Nieborów απορρίφθηκε).'
+];
+
+/* ---------- Checklist ---------- */
+var CHECK = [
+ {g:"Κρατήσεις & εισιτήρια", items:[
+  ["bk-kop","Εισιτήρια Copernicus online για Τετ 18/11, ώρα 9:30 (πάρτε διαβατήρια/ταυτότητες για το μειωμένο)"],
+  ["bk-stara","Τραπέζι Stara Kamienica, Τρ 17/11 17:30 — +48 22 114 43 33"],
+  ["bk-prodiz","Τραπέζι Prodiż Warszawski, Τετ 18/11 13:15 — +48 22 127 71 71"],
+  ["bk-wil","Τραπέζι Restauracja Wilanów, Πέμ 19/11 12:30 — +48 579 630 630"],
+  ["bk-app","Εφαρμογή Jakdojade για εισιτήρια ΜΜΜ (75′ ζώνη 1: 4,40 zł· κάτω των 7 και καρότσι δωρεάν)"]
+ ]},
+ {g:"Να επιβεβαιωθούν", items:[
+  ["c1","Διεύθυνση διαμερίσματος (Krucza 51, από τρίτους), ώρες check-in/check-out, φύλαξη αποσκευών το Σάββατο"],
+  ["c2","Jarmark: πρόγραμμα έναρξης, καρουζέλ και ρόδα στις 20/11, τελικό ωράριο, τιμές περιπτέρων"],
+  ["c3","Φωτεινός κήπος Park Świętokrzyski: ακριβής ημερομηνία και ωράριο"],
+  ["c4","Królewski Ogród Światła 2026/27 στο Wilanów: αν θα γίνει και πότε"],
+  ["c5","Χρόνοι λεωφορείων 116/180 και ταξί· ποιο τραμ πάει στον ζωολογικό· τιμή εισιτηρίου ΜΜΜ για τον 10χρονο"],
+  ["c6","Copernicus: διαθεσιμότητα εισιτηρίων και πρόγραμμα πλανηταρίου 18/11· ποιο έγγραφο δέχονται για το μειωμένο"],
+  ["c7","Neon Museum: ωράριο Τρίτης–Πέμπτης · Ταράτσα PKiN: τιμή για παιδιά"],
+  ["c8a","Prodiż: το σετ της 18/11 και τα σκαλιά στην είσοδο"],
+  ["c8b","Stara Kamienica: τιμές 2026 (το μενού είναι του 2025)"],
+  ["c8c","Παιδικά καθίσματα: σε κανένα εστιατόριο δεν επιβεβαιώθηκαν"],
+  ["c8d","Rusałka: τιμές 2026 και ωράριο Παρασκευής (17:00 ή 16:30)"],
+  ["c9","Teatr Lalka: τιμή εισιτηρίου (60/55 zł από αναζήτηση) και θέσεις για ιδιώτες στις πρωινές καθημερινής"],
+  ["c10","Ποια κλειστά κτίρια του ζωολογικού θα είναι ανοιχτά στις 20/11"]
+ ]}
+];
+
+/* ---------- Render ---------- */
+var TABS = DAYS.map(function(d){return {id:d.id,label:d.tab,small:d.date.slice(8)+"/11"};})
+  .concat([{id:"summary",label:"Σύνοψη",small:"& κόστος"},{id:"events",label:"Events",small:"17–21/11"},{id:"check",label:"✓ Λίστα",small:"επιβεβαίωση"}]);
+
+function restCard(r){
+  if(!r) return "";
+  var s='<div class="card rest"><div class="kicker">🍽️ '+r.kicker+'</div><h3>'+link(r.url,r.name)+'</h3><div style="color:var(--muted);font-size:.92rem">'+r.addr+'</div>';
+  s+='<div class="stats">'+r.stats.map(function(x){return '<span class="stat">'+x+'</span>';}).join("")+'</div>';
+  s+='<div class="price">'+r.price+' <small>('+r.eur+')</small></div><div style="font-size:.85rem;color:var(--muted)">'+r.pnote+'</div>';
+  s+='<dl class="kv"><dt>Γιατί</dt><dd>'+r.why+'</dd><dt>Τι να πάρετε</dt><dd><ul>'+r.dishes.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul></dd><dt>Κράτηση</dt><dd>'+r.book+(r.email?' · <a href="mailto:'+r.email+'">'+r.email+'</a>':'')+'</dd></dl>';
+  s+='<div class="caveat">⚠️ '+r.caveat+'</div>';
+  s+='<div class="btns">'+r.phones.map(tel).join("")+'<a class="btn alt" href="'+gm(P[r.place].q)+'" target="_blank" rel="noopener">🗺️ Google Maps</a></div>';
+  if(r.links.length) s+='<p style="font-size:.9rem;margin:.6rem 0 0">'+r.links.map(function(l){return link(l[0],l[1]);}).join(" · ")+'</p>';
+  return s+'</div>';
+}
+function dayPanel(d,i){
+  var s='<section class="panel" role="tabpanel" id="p-'+d.id+'"><h2 class="daytitle">'+d.title+'</h2><p class="daysub">'+d.sub+'</p>';
+  s+='<div class="card"><h3>Πρόγραμμα</h3><ol class="timeline">'+d.tl.map(function(t){return '<li class="'+(t[2]||"")+'"><div class="t">'+t[0]+'</div><div class="what">'+t[1]+'</div></li>';}).join("")+'</ol></div>';
+  s+= d.rest? restCard(d.rest) : '<div class="card"><h3>🍽️ Φαγητό</h3><p style="margin:0">'+d.norest+'</p></div>';
+  d.backups.forEach(function(b){s+='<details class="backup"><summary>'+b.t+'</summary><div class="inner">'+b.h+'</div></details>';});
+  s+='<div class="card weather"><h3>Αν χαλάσει ο καιρός</h3><p style="margin:0">'+d.weather+'</p></div>';
+  s+='<div class="pager"><button data-go="'+(i-1)+'" '+(i===0?"disabled":"")+'>← Προηγούμενη</button><button data-go="'+(i+1)+'">'+(i===DAYS.length-1?"Σύνοψη →":"Επόμενη →")+'</button></div>';
+  return s+'</section>';
+}
+function summaryPanel(){
+  var rows=[["Τρ 17","Άφιξη 14:15","<b>Stara Kamienica</b> 17:30","Ζεστή σοκολάτα Wedel, μικρή βόλτα",0],
+            ["Τετ 18","<b>Copernicus</b> (Bzzz! για τα μικρά)","<b>Prodiż Warszawski</b>, σετ 45 zł","Ύπνος μωρού· προαιρετικά Neon Museum",1],
+            ["Πέμ 19","<b>Wilanów</b>, δωρεάν την Πέμπτη","<b>Restauracja Wilanów</b>","Επιστροφή πριν σκοτεινιάσει",2],
+            ["Παρ 20","<b>Ζωολογικός</b> από 9:00","<b>Bar Mleczny Rusałka</b>","<b>Πρώτη μέρα Jarmark Warszawski</b>",3],
+            ["Σάβ 21","Ταράτσα PKiN, βόλτα στην αγορά","— (αναχώρηση)","Αεροδρόμιο 12:15–12:30",4]];
+  var s='<section class="panel" role="tabpanel" id="p-summary"><h2 class="daytitle">Σύνοψη</h2><p class="daysub">Πάτα μια γραμμή για να πας στη μέρα.</p>';
+  s+='<div class="card" style="overflow-x:auto"><table class="sum"><tr><th>Μέρα</th><th>Πρωί</th><th>Φαγητό</th><th>Απόγευμα</th></tr>'+rows.map(function(r){return '<tr data-go="'+r[4]+'"><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';}).join("")+'</table></div>';
+  s+='<div class="card"><h3>💶 Κόστος φαγητού για 7 (εκτίμηση)</h3><ul style="margin:.3rem 0;padding-left:20px"><li>17/11 Stara Kamienica: 420–550 zł (≈96–126 €)</li><li>18/11 Prodiż: 300–360 zł (≈69–82 €)</li><li>19/11 Restauracja Wilanów: 400–520 zł (≈92–119 €)</li><li>20/11 Rusałka: 150–200 zł (≈34–46 €)</li></ul><p style="margin:.4rem 0 0"><b>Σύνολο: περίπου 1.270–1.630 zł (≈290–375 €)</b> για τα τέσσερα γεύματα.</p></div>';
+  s+='<div class="card"><h3>🎟️ Εισιτήρια στο πρόγραμμα</h3><ul style="margin:.3rem 0;padding-left:20px"><li>Copernicus: ~260 zł (≈60 €)</li><li>Wilanów (Πέμπτη): δωρεάν· ακουστικός οδηγός παιδικής διαδρομής 14 zł</li><li>Ζωολογικός: ~181 zł (≈41 €)</li><li>Ταράτσα PKiN: 30 zł κανονικό / 25 zł μειωμένο (από αναζήτηση)</li></ul></div>';
+  s+='<div class="card"><h3>🚇 Συγκοινωνίες</h3><p style="margin:0">Παιδιά κάτω των 7 δωρεάν, το καρότσι δεν πληρώνει ('+link("https://www.wtp.waw.pl/en/faq-questions-and-answers/","ZTM FAQ")+'). Ο 10χρονος πληρώνει. Εισιτήριο 75 λεπτών ζώνης 1: 4,40 zł ('+link("https://airporttocitycenter.com/warsaw-chopin/skm-km-train/","airporttocitycenter")+'). Μηχάνημα ή εφαρμογή Jakdojade. Για 7 άτομα με αποσκευές: <b>δύο αυτοκίνητα</b> Bolt/ταξί.</p></div>';
+  s+='<div class="card"><h3>💱 Μετατροπή zł → €</h3><div class="conv"><input id="zl" type="number" inputmode="decimal" min="0" placeholder="π.χ. 100" aria-label="Ζλότι"> zł = <output id="eur">—</output></div><p style="font-size:.8rem;color:var(--muted);margin:.4rem 0 0">Με την ισοτιμία του προγράμματος, 4,37 zł ανά €. Κατά προσέγγιση.</p></div>';
+  return s+'</section>';
+}
+function eventsPanel(){
+  var s='<section class="panel" role="tabpanel" id="p-events"><h2 class="daytitle">Εκδηλώσεις 17–21 Νοεμβρίου</h2><p class="daysub">Επιβεβαιωμένες και χρήσιμες.</p>';
+  EVENTS.forEach(function(e){
+    s+='<div class="card event"><h3>'+e.t+'<span class="when">'+e.w+'</span></h3><div>'+e.b.map(function(b){return '<span class="badge '+b[0]+'">'+b[1]+'</span>';}).join("")+'</div><p style="margin:.5rem 0">'+e.h+'</p><p style="font-size:.9rem;margin:0">🔗 '+e.l.map(function(l){return link(l[0],l[1]);}).join(" · ")+'</p></div>';
+  });
+  s+='<details class="backup" open><summary>Δεν πέφτουν μέσα στις μέρες σας ή δεν έχουν ανακοινωθεί</summary><div class="inner"><ul style="padding-left:18px;margin:0">'+NOT_IN.map(function(x){return '<li style="margin-bottom:8px">'+x+'</li>';}).join("")+'</ul></div></details>';
+  return s+'</section>';
+}
+function checkPanel(){
+  var s='<section class="panel" role="tabpanel" id="p-check"><h2 class="daytitle">Λίστα επιβεβαίωσης</h2><p class="daysub">Τα τικ μένουν αποθηκευμένα σε αυτή τη συσκευή.</p><div class="card"><div class="progress"><div id="prog"></div></div><div id="progtxt" style="font-size:.85rem;color:var(--muted)"></div></div>';
+  CHECK.forEach(function(g){
+    s+='<div class="card"><h3>'+g.g+'</h3><ul class="checklist">'+g.items.map(function(it){return '<li><label><input type="checkbox" data-k="'+it[0]+'"><span>'+it[1]+'</span></label></li>';}).join("")+'</ul></div>';
+  });
+  s+='<button id="resetck" style="all:unset;cursor:pointer;color:var(--muted);font-size:.85rem;padding:12px 4px;display:inline-block">↺ Καθαρισμός λίστας</button>';
+  return s+'</section>';
+}
+
+var panels=document.getElementById("panels");
+panels.innerHTML = DAYS.map(dayPanel).join("")+summaryPanel()+eventsPanel()+checkPanel();
+var tabrow=document.getElementById("tabrow");
+tabrow.innerHTML = TABS.map(function(t,i){return '<button class="tab" role="tab" id="t-'+t.id+'" aria-controls="p-'+t.id+'" aria-selected="false" data-i="'+i+'">'+t.label+'<small>'+t.small+'</small></button>';}).join("");
+
+/* ---------- Checklist storage ---------- */
+var LS="warsaw2026-checklist";
+function loadCk(){try{return JSON.parse(localStorage.getItem(LS)||"{}");}catch(e){return {};}}
+function saveCk(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+function refreshProg(){
+  var boxes=document.querySelectorAll(".checklist input"), n=0;
+  boxes.forEach(function(b){if(b.checked)n++;});
+  document.getElementById("prog").style.width=(100*n/boxes.length)+"%";
+  document.getElementById("progtxt").textContent=n+" από "+boxes.length+" ολοκληρώθηκαν";
+}
+(function(){
+  var st=loadCk();
+  document.querySelectorAll(".checklist input").forEach(function(b){
+    b.checked=!!st[b.dataset.k];
+    b.addEventListener("change",function(){var o=loadCk();o[b.dataset.k]=b.checked;saveCk(o);refreshProg();});
+  });
+  document.getElementById("resetck").addEventListener("click",function(){
+    if(!confirm("Να καθαριστούν όλα τα τικ;"))return;
+    saveCk({});document.querySelectorAll(".checklist input").forEach(function(b){b.checked=false;});refreshProg();
+  });
+  refreshProg();
+})();
+
+/* ---------- Converter ---------- */
+document.getElementById("zl").addEventListener("input",function(){
+  var v=parseFloat(this.value.replace(",","."));
+  document.getElementById("eur").textContent = isNaN(v)?"—":"≈ "+(v/4.37).toLocaleString("el-GR",{maximumFractionDigits:0})+" €";
+});
+
+/* ---------- Clock ---------- */
+function tick(){
+  try{
+    var o={hour:"2-digit",minute:"2-digit"};
+    var w=new Date().toLocaleTimeString("el-GR",Object.assign({timeZone:"Europe/Warsaw"},o));
+    var g=new Date().toLocaleTimeString("el-GR",Object.assign({timeZone:"Europe/Athens"},o));
+    document.getElementById("clock").textContent="Τώρα: Βαρσοβία "+w+" · Ελλάδα "+g;
+  }catch(e){}
+}
+tick(); setInterval(tick,30000);
+
+/* ---------- Map ---------- */
+var map=null, layer=null, mapOK=typeof L!=="undefined";
+function icon(p){
+  return L.divIcon({className:"",html:'<div class="mk" style="background:'+C[p.k]+'"><span>'+p.i+'</span></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-28]});
+}
+function popup(p){return '<b>'+p.n+'</b><br>'+p.d+'<br><a class="gm" href="'+gm(p.q)+'" target="_blank" rel="noopener">🗺️ Άνοιγμα στο Google Maps</a>';}
+function placesFor(id){
+  if(id==="events") return ["apt","pkin","parksw","kopernik","wilanow","zoo","wedel","baj"];
+  if(id==="summary"||id==="check") return Object.keys(P);
+  for(var i=0;i<DAYS.length;i++) if(DAYS[i].id===id) return DAYS[i].places;
+  return ["apt"];
+}
+function drawMap(id,label){
+  var ids=placesFor(id);
+  document.getElementById("maptitle").textContent="🗺️ Χάρτης · "+label;
+  document.getElementById("maplist").innerHTML = ids.map(function(k){var p=P[k];return '<li><span><span class="dot" style="background:'+C[p.k]+'"></span>'+p.n+'</span><a href="'+gm(p.q)+'" target="_blank" rel="noopener">Google Maps ↗</a></li>';}).join("");
+  if(!mapOK) return;
+  if(!map){
+    map=L.map("map",{scrollWheelZoom:false,tap:true});
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+    layer=L.layerGroup().addTo(map);
+  }
+  layer.clearLayers();
+  var b=[];
+  ids.forEach(function(k){var p=P[k];L.marker(p.ll,{icon:icon(p),title:p.n}).bindPopup(popup(p)).addTo(layer);b.push(p.ll);});
+  if(b.length===1) map.setView(b[0],15); else map.fitBounds(b,{padding:[30,30],maxZoom:16});
+  setTimeout(function(){map.invalidateSize();},50);
+}
+
+/* ---------- Tabs & swipe ---------- */
+var cur=0;
+function show(i,scroll){
+  if(i<0||i>=TABS.length) return;
+  cur=i;
+  TABS.forEach(function(t,j){
+    document.getElementById("t-"+t.id).setAttribute("aria-selected",j===i?"true":"false");
+    document.getElementById("p-"+t.id).classList.toggle("active",j===i);
+  });
+  var tb=document.getElementById("t-"+TABS[i].id);
+  tb.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
+  try{history.replaceState(null,"","#"+TABS[i].id);}catch(e){}
+  drawMap(TABS[i].id, i<DAYS.length? TABS[i].label.split(" ")[0]+" "+TABS[i].small : TABS[i].label);
+  if(scroll) window.scrollTo({top:document.getElementById("main").offsetTop-70,behavior:"smooth"});
+}
+tabrow.addEventListener("click",function(e){var b=e.target.closest(".tab");if(b)show(+b.dataset.i,false);});
+panels.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g)show(+g.dataset.go,true);});
+tabrow.addEventListener("keydown",function(e){if(e.key==="ArrowRight")show(cur+1);if(e.key==="ArrowLeft")show(cur-1);});
+(function(){
+  var x0=null,y0=null;
+  panels.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  panels.addEventListener("touchend",function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
+    if(Math.abs(dx)>70 && Math.abs(dx)>2*Math.abs(dy)) show(cur+(dx<0?1:-1),true);
+  },{passive:true});
+})();
+
+/* start: hash, else today's trip day, else Tue 17 */
+(function(){
+  var h=location.hash.slice(1), start=0;
+  TABS.forEach(function(t,i){if(t.id===h)start=i;});
+  if(!h){
+    try{
+      var today=new Date().toLocaleDateString("en-CA",{timeZone:"Europe/Warsaw"});
+      DAYS.forEach(function(d,i){if(d.date===today)start=i;});
+    }catch(e){}
+  }
+  show(start,false);
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* Leaflet loads after the content so the page works offline; draw the map once it arrives. */
+if(typeof L!=="undefined"){ mapOK=true; show(cur,false); }
+else { var m=document.getElementById("map"); if(m) m.outerHTML='<div class="mapfallback">Ο χάρτης χρειάζεται internet. Οι παρακάτω σύνδεσμοι ανοίγουν κάθε σημείο στο Google Maps.</div>'; }
+</script>
+</body>
+</html>

@@ -26,6 +26,7 @@
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
 a{color:var(--accent);text-underline-offset:2px}
+header.hero a.place{color:#fff}
 h1,h2,h3{line-height:1.25;margin:0}
 .wrap{max-width:760px;margin:0 auto;padding:0 14px}
 header.hero{background:linear-gradient(135deg,#b5462f,#e08a3c);color:#fff;padding:22px 0 18px}
@@ -249,6 +250,128 @@ var P = {
 function gm(q){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
 function tel(num){return '<a class="btn food" href="tel:'+num.replace(/[^+\d]/g,"")+'">📞 '+num+'</a>';}
 function link(href,txt){return '<a href="'+href+'" target="_blank" rel="noopener">'+txt+'</a>';}
+/* Visible place names → Google Maps. Values are keys in P, or a search query. */
+var PLACE_LINKS=[
+ ["Fashionable City Center Apartment","apt"],
+ ["Pijalnia Czekolady E. Wedel","wedel"],
+ ["Pijalnia E. Wedel","wedel"],
+ ["Bar Mleczny Prasowy Powiśle","prasowy"],
+ ["Bar Mleczny Bambino","bambino"],
+ ["Bar Mleczny Rusałka","rusalka"],
+ ["Restauracja Wilanów","restwil"],
+ ["Prodiż Warszawski","prodiz"],
+ ["Mąka i Woda","maka"],
+ ["Pyzy Flaki Gorące","pyzy"],
+ ["Dawne Smaki","dawne"],
+ ["Allegato Café","Allegato Café, Wilanów, Warszawa"],
+ ["Harvest (Elektrownia Powiśle)","harvest"],
+ ["Elektrownia Powiśle","harvest"],
+ ["Centrum Nauki Kopernik","kopernik"],
+ ["Κέντρο Επιστημών Copernicus","kopernik"],
+ ["Park Świętokrzyski","parksw"],
+ ["Φωτεινός κήπος","parksw"],
+ ["φωτεινό κήπο","parksw"],
+ ["φωτεινός κήπος","parksw"],
+ ["Βαρσοβία (WAW, Chopin)","airport"],
+ ["Warszawa Śródmieście","srodm"],
+ ["Warszawa Centralna","Warszawa Centralna, Warszawa"],
+ ["Lotnisko Chopina","airport"],
+ ["Chopin (WAW)","airport"],
+ ["Στο αεροδρόμιο","airport"],
+ ["Dworzec Wileński","wilenski"],
+ ["Świętokrzyska","Metro Świętokrzyska, Warszawa"],
+ ["Park Praski","Park Praski, Warszawa"],
+ ["Ratuszowa-ZOO","zoo"],
+ ["Ratuszowa 1/3","zoo"],
+ ["Ζωολογικός κήπος","zoo"],
+ ["ζωολογικού","zoo"],
+ ["ζωολογικό","zoo"],
+ ["Ζωολογικός","zoo"],
+ ["Teatr Lalka","Teatr Lalka, Warszawa"],
+ ["Teatr Baj","baj"],
+ ["Neon Museum","Neon Museum, Warszawa"],
+ ["Jarmark Warszawski","Plac Defilad, Warszawa"],
+ ["Królewski Ogród Światła","wilanow"],
+ ["Παλάτι του Wilanów","wilanow"],
+ ["Παλάτι Πολιτισμού","pkin"],
+ ["Ταράτσα θέας PKiN","pkin"],
+ ["Ταράτσα PKiN","pkin"],
+ ["ταράτσα PKiN","pkin"],
+ ["Plac Defilad","Plac Defilad, Warszawa"],
+ ["Pl. Trzech Krzyży","Plac Trzech Krzyży, Warszawa"],
+ ["Stanisława Kostki Potockiego 27","restwil"],
+ ["Potockiego 27","restwil"],
+ ["Chmielna 13A","maka"],
+ ["Szpitalna 8","wedel"],
+ ["Poznańska 16","prodiz"],
+ ["Zajęcza 1A","prasowy"],
+ ["Nowy Świat 49","dawne"],
+ ["Floriańska 14","rusalka"],
+ ["Brzeska 29/31","pyzy"],
+ ["Jagiellońska 28","baj"],
+ ["Νίκος Καζαντζάκης","Nikos Kazantzakis Airport, Heraklion"],
+ ["Ελευθέριος Βενιζέλος","Eleftherios Venizelos Airport, Athens"],
+ ["Βασιλική Οδός","Trakt Królewski, Warszawa"],
+ ["Παλιά Πόλη","Stare Miasto, Warszawa"],
+ ["Plac Centralny","Plac Centralny, Warszawa"],
+ ["Pałac Staszica","Pałac Staszica, Warszawa"],
+ ["Zimowy Narodowy","PGE Narodowy, Warszawa"],
+ ["Φιλαρμονικής","Filharmonia Narodowa, Warszawa"],
+ ["Hoża 19","bambino"],
+ ["Krucza 51","apt"],
+ ["Krucza 21","bambino"],
+ ["Dobra 42","harvest"],
+ ["Ηράκλειο","Nikos Kazantzakis Airport, Heraklion"],
+ ["Διαμέρισμα","apt"],
+ ["διαμέρισμα","apt"],
+ ["Αεροδρόμιο","airport"],
+ ["Nowy Świat","Nowy Świat, Warszawa"],
+ ["Wilanów","wilanow"],
+ ["Jarmark","Plac Defilad, Warszawa"],
+ ["Copernicus","kopernik"],
+ ["Śródmieście","srodm"],
+ ["Foksal","Foksal, Warszawa"],
+ ["Barbakan","Barbakan, Warszawa"],
+ ["Nieborów","Nieborów"],
+ ["Guliwer","Teatr Guliwer, Warszawa"],
+ ["Prodiż","prodiz"],
+ ["prodiż","prodiz"],
+ ["Rusałka","rusalka"],
+ ["Harvest","harvest"],
+ ["Wedel","wedel"],
+ ["Bzzz!","kopernik"],
+ ["Αθήνα","Eleftherios Venizelos Airport, Athens"],
+ ["Βαρσοβία","Warszawa"],
+ ["Praga","Praga, Warszawa"],
+ ["σπίτι","apt"],
+ ["Σπίτι","apt"],
+ ["PKiN","pkin"],
+ ["Centrum","centrum"]
+];
+var PLACE_MAP={}, PLACE_RE;
+PLACE_LINKS.sort(function(a,b){return b[0].length-a[0].length;});
+PLACE_LINKS.forEach(function(a){PLACE_MAP[a[0]]=a[1];});
+PLACE_RE=new RegExp(PLACE_LINKS.map(function(a){return a[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}).join("|"),"g");
+function placeQuery(key){return P[key]?P[key].q:key;}
+function placeAnchor(label){
+  return '<a class="place" href="'+gm(placeQuery(PLACE_MAP[label]))+'" target="_blank" rel="noopener" title="Google Maps">'+label+'</a>';
+}
+function linkPlaces(html){
+  PLACE_RE.lastIndex=0;
+  var parts=String(html).split(/(<[^>]+>)/), inA=0, skip=0;
+  return parts.map(function(part){
+    if(part.charAt(0)==="<"){
+      if(/^<a\b/i.test(part)) inA++;
+      else if(/^<\/a>/i.test(part)) inA=Math.max(0,inA-1);
+      else if(/^<(script|style|textarea)\b/i.test(part)) skip++;
+      else if(/^<\/(script|style|textarea)>/i.test(part)) skip=Math.max(0,skip-1);
+      return part;
+    }
+    if(inA||skip||!part) return part;
+    PLACE_RE.lastIndex=0;
+    return part.replace(PLACE_RE, placeAnchor);
+  }).join("");
+}
 
 /* ---------- Days ---------- */
 var DAYS = [
@@ -472,7 +595,7 @@ var TABS = DAYS.map(function(d){return {id:d.id,label:d.tab,small:d.date.slice(8
 
 function restCard(r){
   if(!r) return "";
-  var s='<div class="card rest"><div class="kicker">🍽️ '+r.kicker+'</div><h3>'+link(r.url,r.name)+'</h3><div style="color:var(--muted);font-size:.92rem">'+r.addr+'</div>';
+  var s='<div class="card rest"><div class="kicker">🍽️ '+r.kicker+'</div><h3><a class="place" href="'+gm(P[r.place].q)+'" target="_blank" rel="noopener" title="Google Maps">'+r.name+'</a></h3><div style="color:var(--muted);font-size:.92rem">'+r.addr+'</div>';
   s+='<div class="stats">'+r.stats.map(function(x){return '<span class="stat">'+x+'</span>';}).join("")+'</div>';
   s+='<div class="price">'+r.price+' <small>('+r.eur+')</small></div><div style="font-size:.85rem;color:var(--muted)">'+r.pnote+'</div>';
   s+='<dl class="kv"><dt>Γιατί</dt><dd>'+r.why+'</dd><dt>Τι να πάρετε</dt><dd><ul>'+r.dishes.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul></dd><dt>Κράτηση</dt><dd>'+r.book+(r.email?' · <a href="mailto:'+r.email+'">'+r.email+'</a>':'')+'</dd></dl>';
@@ -553,7 +676,9 @@ function checkPanel(){
 }
 
 var panels=document.getElementById("panels");
-panels.innerHTML = DAYS.map(dayPanel).join("")+summaryPanel()+eventsPanel()+checkPanel();
+panels.innerHTML = linkPlaces(DAYS.map(dayPanel).join("")+summaryPanel()+eventsPanel()+checkPanel());
+var hero=document.querySelector("#trip header.hero");
+if(hero) hero.innerHTML=linkPlaces(hero.innerHTML);
 var tabrow=document.getElementById("tabrow");
 tabrow.innerHTML = TABS.map(function(t,i){return '<button class="tab" role="tab" id="t-'+t.id+'" aria-controls="p-'+t.id+'" aria-selected="false" data-i="'+i+'">'+t.label+'<small>'+t.small+'</small></button>';}).join("");
 
@@ -608,7 +733,7 @@ var map=null, layer=null, mapOK=typeof L!=="undefined";
 function icon(p){
   return L.divIcon({className:"",html:'<div class="mk" style="background:'+C[p.k]+'"><span>'+p.i+'</span></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-28]});
 }
-function popup(p){return '<b>'+p.n+'</b><br>'+p.d+'<br><a class="gm" href="'+gm(p.q)+'" target="_blank" rel="noopener">🗺️ Άνοιγμα στο Google Maps</a>';}
+function popup(p){return linkPlaces('<b>'+p.n+'</b><br>'+p.d+'<br><a class="gm" href="'+gm(p.q)+'" target="_blank" rel="noopener">🗺️ Άνοιγμα στο Google Maps</a>');}
 function placesFor(id){
   if(id==="events") return ["apt","pkin","parksw","kopernik","wilanow","zoo","wedel","baj"];
   if(id==="summary"||id==="check") return Object.keys(P);
@@ -618,7 +743,7 @@ function placesFor(id){
 function drawMap(id,label){
   var ids=placesFor(id);
   document.getElementById("maptitle").textContent="🗺️ Χάρτης · "+label;
-  document.getElementById("maplist").innerHTML = ids.map(function(k){var p=P[k];return '<li><span><span class="dot" style="background:'+C[p.k]+'"></span>'+p.n+'</span><a href="'+gm(p.q)+'" target="_blank" rel="noopener">Google Maps ↗</a></li>';}).join("");
+  document.getElementById("maplist").innerHTML = linkPlaces(ids.map(function(k){var p=P[k];return '<li><span><span class="dot" style="background:'+C[p.k]+'"></span>'+p.n+'</span><a href="'+gm(p.q)+'" target="_blank" rel="noopener">Google Maps ↗</a></li>';}).join(""));
   if(!mapOK) return;
   if(!map){
     map=L.map("map",{scrollWheelZoom:false,tap:true});
@@ -648,7 +773,7 @@ function show(i,scroll){
   if(scroll) window.scrollTo({top:document.getElementById("main").offsetTop-70,behavior:"smooth"});
 }
 tabrow.addEventListener("click",function(e){var b=e.target.closest(".tab");if(b)show(+b.dataset.i,false);});
-panels.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g)show(+g.dataset.go,true);});
+panels.addEventListener("click",function(e){if(e.target.closest("a"))return;var g=e.target.closest("[data-go]");if(g)show(+g.dataset.go,true);});
 tabrow.addEventListener("keydown",function(e){if(e.key==="ArrowRight")show(cur+1);if(e.key==="ArrowLeft")show(cur-1);});
 (function(){
   var x0=null,y0=null;

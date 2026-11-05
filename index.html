@@ -112,6 +112,9 @@ table.sum tr{cursor:pointer}
 .checklist label{display:flex;gap:12px;align-items:flex-start;padding:12px 2px;cursor:pointer;min-height:52px}
 .checklist input{width:26px;height:26px;flex:0 0 26px;accent-color:var(--ok);margin:0}
 .checklist input:checked + span{text-decoration:line-through;color:var(--muted)}
+.mednote{font-size:.92rem;margin:0 0 8px}
+.packfill{display:block;font-weight:700;font-size:.92rem;margin:12px 0 6px}
+#med-own{font:inherit;width:100%;min-height:72px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
 .progress{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 2px}
 .progress div{height:100%;background:var(--ok);width:0;transition:width .3s}
 .conv{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -425,6 +428,33 @@ var CHECK = [
   ["c8d","Rusałka: τιμές 2026 και ωράριο Παρασκευής (17:00 ή 16:30)"],
   ["c9","Teatr Lalka: τιμή εισιτηρίου (60/55 zł από αναζήτηση) και θέσεις για ιδιώτες στις πρωινές καθημερινής"],
   ["c10","Ποια κλειστά κτίρια του ζωολογικού θα είναι ανοιχτά στις 20/11"]
+ ]},
+ {g:"Φάρμακα · πυρετός και πόνος",
+  note:"Λίστα για τη βαλίτσα (ενήλικες, παιδί και βρέφος περίπου 1 έτους), όχι συνταγή και χωρίς δόσεις. Πάρτε ό,τι ήδη χρησιμοποιείτε. Για παιδί και βρέφος, μόνο σκευάσματα που γράφουν την ηλικία τους στη συσκευασία.",
+  caveat:"Όχι ασπιρίνη (acetylsalicylic acid) σε παιδί ή βρέφος. Κοιτάξτε την ηλικία στη συσκευασία πριν το βάλετε στη βαλίτσα.",
+  items:[
+   ["med-para-a","Ενήλικες: παρακεταμόλη (paracetamol· στην Πολωνία συχνά Apap)"],
+   ["med-para-k","Παιδί και βρέφος: παρακεταμόλη για τη δική τους ηλικία (σιρόπι ή υπόθετα). Όχι δόση από μνήμη."],
+   ["med-ibu","Ιβουπροφαίνη (ibuprofen· στην Πολωνία Ibuprom, Ibum ή Nurofen) μόνο αν η συσκευασία καλύπτει την ηλικία. Πολλά σκευάσματα δεν είναι για μικρά βρέφη."]
+ ]},
+ {g:"Φάρμακα · στομάχι", items:[
+  ["med-ors","Φακελάκια ηλεκτρολυτών / ORS (στην Πολωνία συχνά Orsalit)"],
+  ["med-dia","Αντιδιαρροϊκό μόνο για ενήλικες, όχι για το παιδί και το βρέφος"]
+ ]},
+ {g:"Φάρμακα · αλλεργία και ταξίδι", items:[
+  ["med-al","Αντιισταμινικό που ήδη ξέρετε. Για παιδί ή βρέφος μόνο αν το επιτρέπει η ηλικία στη συσκευασία."],
+  ["med-mot","Ναυτία ταξιδιού, προαιρετικά, για όποιον την παθαίνει (στην Πολωνία συχνά Aviomarin). Όχι για το μωρό αν δεν το γράφει η συσκευασία."]
+ ]},
+ {g:"Φάρμακα · πληγές και βαλίτσα",
+  fill:["med-own","Φάρμακα που παίρνει ήδη κάποιος (συμπληρώστε εσείς)"],
+  items:[
+   ["med-pl","Τσιρότα για ενήλικα και παιδί"],
+   ["med-as","Αντισηπτικό για μικρές γρατζουνιές (στην Πολωνία συχνά Octenisept)"],
+   ["med-th","Θερμόμετρο"],
+   ["med-sa","Μύτη μωρού: φυσιολογικός ορός ή ρινικό σπρέι για βρέφη (sól fizjologiczna)"],
+   ["med-lip","Lip balm για το κρύο, προαιρετικό"],
+   ["med-sun","Αντηλιακό, προαιρετικό τον Νοέμβριο (ο ήλιος δύει γύρω στις 15:40)"],
+   ["med-bag","Όλα στη χειραποσκευή, στην αρχική συσκευασία"]
  ]}
 ];
 
@@ -503,7 +533,12 @@ function eventsPanel(){
 function checkPanel(){
   var s='<section class="panel" role="tabpanel" id="p-check"><h2 class="daytitle">Λίστα επιβεβαίωσης</h2><p class="daysub">Τα τικ μένουν αποθηκευμένα σε αυτή τη συσκευή.</p><div class="card"><div class="progress"><div id="prog"></div></div><div id="progtxt" style="font-size:.85rem;color:var(--muted)"></div></div>';
   CHECK.forEach(function(g){
-    s+='<div class="card"><h3>'+g.g+'</h3><ul class="checklist">'+g.items.map(function(it){return '<li><label><input type="checkbox" data-k="'+it[0]+'"><span>'+it[1]+'</span></label></li>';}).join("")+'</ul></div>';
+    s+='<div class="card"><h3>'+g.g+'</h3>';
+    if(g.note) s+='<p class="mednote">'+g.note+'</p>';
+    if(g.caveat) s+='<div class="caveat">'+g.caveat+'</div>';
+    s+='<ul class="checklist">'+g.items.map(function(it){return '<li><label><input type="checkbox" data-k="'+it[0]+'"><span>'+it[1]+'</span></label></li>';}).join("")+'</ul>';
+    if(g.fill) s+='<label class="packfill" for="'+g.fill[0]+'">'+g.fill[1]+'</label><textarea id="'+g.fill[0]+'" rows="2" placeholder="Συμπληρώστε εσείς"></textarea>';
+    s+='</div>';
   });
   s+='<button id="resetck" style="all:unset;cursor:pointer;color:var(--muted);font-size:.85rem;padding:12px 4px;display:inline-block">↺ Καθαρισμός λίστας</button>';
   return s+'</section>';
@@ -535,6 +570,12 @@ function refreshProg(){
     saveCk({});document.querySelectorAll(".checklist input").forEach(function(b){b.checked=false;});refreshProg();
   });
   refreshProg();
+  var own=document.getElementById("med-own");
+  if(own){
+    var NOTE="warsaw2026-mednote";
+    try{own.value=localStorage.getItem(NOTE)||"";}catch(e){}
+    own.addEventListener("input",function(){try{localStorage.setItem(NOTE,own.value);}catch(e){}});
+  }
 })();
 
 /* ---------- Converter ---------- */

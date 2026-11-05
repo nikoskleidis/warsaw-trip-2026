@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#b5462f">
-<title>Βαρσοβία 17–21/11/2026 · Πρόγραμμα</title>
+<title>Πρόγραμμα ταξιδιού</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
 :root{
@@ -123,9 +123,44 @@ footer{color:var(--muted);font-size:.8rem;padding:20px 0 40px;text-align:center}
 .pager button{flex:1;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:.92rem;cursor:pointer}
 .pager button:disabled{opacity:.35}
 @media (min-width:700px){#map{height:440px}}
+/* Shared-password screen. Light obfuscation only: the password is in this file, not real security. */
+#gate{min-height:100vh}
+#trip{display:none}
+html.unlocked #gate{display:none}
+html.unlocked #trip{display:block}
+.gatefield{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.gatefield label{font-weight:700;font-size:.95rem}
+.gatefield input{font:inherit;width:100%;min-height:48px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+#gate .btn{margin-top:12px;width:100%;justify-content:center;cursor:pointer}
+.gateerr{background:var(--warn-soft);border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:12px;padding:10px 12px;margin:12px 0 0;color:var(--warn);font-weight:700}
+.gatefine{font-size:.82rem;color:var(--muted);margin:.85rem 0 0}
 </style>
+<script>
+/* Unlock sticks for this tab only. The password check below is not real security. */
+try{ if(sessionStorage.getItem("warsaw2026-gate")==="1") document.documentElement.classList.add("unlocked"); }catch(e){}
+</script>
 </head>
 <body>
+<div id="gate">
+  <header class="hero">
+    <div class="wrap">
+      <h1>Πρόγραμμα ταξιδιού</h1>
+      <p>Βάλε τον κωδικό για να δεις το πρόγραμμα.</p>
+    </div>
+  </header>
+  <div class="wrap">
+    <form id="gateform" class="card" autocomplete="off">
+      <div class="gatefield">
+        <label for="gatepw">Κωδικός</label>
+        <input id="gatepw" name="pw" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+      </div>
+      <p id="gateerr" class="gateerr" role="alert" hidden></p>
+      <button class="btn" type="submit">Είσοδος</button>
+      <p class="gatefine">Απλή απόκρυψη, όχι πραγματική ασφάλεια: ο κωδικός βρίσκεται μέσα στον κώδικα της σελίδας.</p>
+    </form>
+  </div>
+</div>
+<div id="trip">
 <header class="hero">
   <div class="wrap">
     <h1>Βαρσοβία · 17–21 Νοεμβρίου 2026</h1>
@@ -175,6 +210,7 @@ footer{color:var(--muted);font-size:.8rem;padding:20px 0 40px;text-align:center}
 <footer class="wrap">
   Φτιαγμένο από το πρόγραμμα «warsaw-itinerary-final-el.md». Οι βαθμολογίες Google είναι από gdziezjescwarszawa.com ή restaurantguru.com, όχι απευθείας από το Google Maps. Ο χάρτης θέλει internet· όλα τα υπόλοιπα δουλεύουν offline. Χάρτης © OpenStreetMap contributors.
 </footer>
+</div>
 
 <script>
 "use strict";
@@ -593,6 +629,47 @@ tabrow.addEventListener("keydown",function(e){if(e.key==="ArrowRight")show(cur+1
 /* Leaflet loads after the content so the page works offline; draw the map once it arrives. */
 if(typeof L!=="undefined"){ mapOK=true; show(cur,false); }
 else { var m=document.getElementById("map"); if(m) m.outerHTML='<div class="mapfallback">Ο χάρτης χρειάζεται internet. Οι παρακάτω σύνδεσμοι ανοίγουν κάθε σημείο στο Google Maps.</div>'; }
+</script>
+<script>
+/* Client-side gate. Exact, case-sensitive password. Anyone who can view source can read it. */
+(function(){
+  var KEY="warsaw2026-gate";
+  var PASS="koumparious_10_26";
+  var TRIP_TITLE="Βαρσοβία 17–21/11/2026 · Πρόγραμμα";
+  var form=document.getElementById("gateform");
+  var input=document.getElementById("gatepw");
+  var err=document.getElementById("gateerr");
+  function reveal(){
+    document.documentElement.classList.add("unlocked");
+    document.title=TRIP_TITLE;
+    if(typeof show==="function") setTimeout(function(){ show(cur,false); }, 60);
+  }
+  if(document.documentElement.classList.contains("unlocked")){ document.title=TRIP_TITLE; return; }
+  if(input) input.focus();
+  input.addEventListener("input",function(){ err.hidden=true; input.removeAttribute("aria-invalid"); });
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    var v=input.value;
+    if(v===""){
+      err.hidden=false;
+      err.textContent="Γράψε τον κωδικό για να συνεχίσεις.";
+      input.setAttribute("aria-invalid","true");
+      input.focus();
+      return;
+    }
+    if(v!==PASS){
+      err.hidden=false;
+      err.textContent="Ο κωδικός δεν είναι σωστός. Είναι ευαίσθητος στα πεζά και τα κεφαλαία.";
+      input.setAttribute("aria-invalid","true");
+      input.select();
+      return;
+    }
+    err.hidden=true;
+    input.removeAttribute("aria-invalid");
+    try{ sessionStorage.setItem(KEY,"1"); }catch(ex){}
+    reveal();
+  });
+})();
 </script>
 </body>
 </html>

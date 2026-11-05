@@ -224,7 +224,7 @@ var P = {
   centrum:{n:"Μετρό Centrum (M1)", ll:[52.2304781,21.0103690], k:"move", i:"Ⓜ️", q:"Metro Centrum, Warszawa", d:"Περίπου 300 μ. από το σπίτι."},
   wedel:{n:"Pijalnia Czekolady E. Wedel", ll:[52.2333859,21.0146763], k:"act", i:"☕", q:"Pijalnia Czekolady E. Wedel, Szpitalna 8, Warszawa", d:"Szpitalna 8, 240 μ. από το σπίτι. Ζεστή σοκολάτα."},
   parksw:{n:"Φωτεινός κήπος, Park Świętokrzyski", ll:[52.2338214,21.0047204], k:"act", i:"✨", q:"Park Świętokrzyski, Warszawa", d:"Δωρεάν διαδραστικός κήπος φωτός, ~800 μ. Ακριβής ημερομηνία/ωράριο δεν ανακοινώθηκαν."},
-  stara:{n:"Stara Kamienica", ll:[52.2315864,21.0151612], k:"food", i:"🍽️", q:"Stara Kamienica, Widok 8, Warszawa", d:"Widok 8, ~55 μ. από το σπίτι. Δείπνο Τρ 17/11 17:30. ☎ +48 22 114 43 33"},
+  maka:{n:"Mąka i Woda", ll:[52.2323745,21.0164944], k:"food", i:"🍽️", q:"Mąka i Woda Chmielna 13A Warszawa", d:"Chmielna 13A. Ναπολιτάνικη πίτσα και φρέσκα ζυμαρικά. Δείπνο Τρ 17/11 17:30. ☎ +48 22 505 91 87"},
   bambino:{n:"Bar Mleczny Bambino (εφεδρικό)", ll:[52.2267934,21.0175602], k:"backup", i:"🥣", q:"Bar Mleczny Bambino, Hoża 19, Warszawa", d:"Hoża 19, ~500 μ. Δευ–Παρ 8:00–20:00."},
   kopernik:{n:"Κέντρο Επιστημών Copernicus", ll:[52.2417760,21.0286002], k:"act", i:"🔬", q:"Centrum Nauki Kopernik, Warszawa", d:"Τετ 18/11 9:15–12:45. Bzzz! για κάτω των 7."},
   prodiz:{n:"Prodiż Warszawski", ll:[52.2252405,21.0120636], k:"food", i:"🍽️", q:"Prodiż Warszawski, Poznańska 16, Warszawa", d:"Poznańska 16, 716 μ. από το σπίτι. Μεσημεριανό σετ 45 zł. ☎ +48 22 127 71 71"},
@@ -249,26 +249,26 @@ function link(href,txt){return '<a href="'+href+'" target="_blank" rel="noopener
 
 /* ---------- Days ---------- */
 var DAYS = [
-{ id:"d17", tab:"Τρ 17", date:"2026-11-17", title:"Τρίτη 17/11 · Άφιξη, ήπια", sub:"Η οικογένεια του Νίκου φτάνει 14:15 με την GQ770. Ζεστή σοκολάτα, μικρή βόλτα, δείπνο δίπλα στο σπίτι.", sky:true,
-  places:["airport","srodm","apt","wedel","parksw","stara","bambino"],
+{ id:"d17", tab:"Τρ 17", date:"2026-11-17", title:"Τρίτη 17/11 · Άφιξη, ήπια", sub:"Η οικογένεια του Νίκου φτάνει 14:15 με την GQ770. Ζεστή σοκολάτα, μικρή βόλτα, δείπνο με πίτσα και ζυμαρικά.", sky:true,
+  places:["airport","srodm","apt","wedel","parksw","maka","bambino"],
   tl:[
    ["14:15","Προσγείωση στο Chopin (WAW). Με τις αποσκευές, έξοδος περίπου 14:45–15:00. Η οικογένεια του Νίκου φτάνει με την <b>GQ770</b> (14:15 τοπική), μετά τη <b>GQ211</b> Ηράκλειο 08:40 → Αθήνα 09:30 (τοπική). Η κράτηση WZ8DPR είναι μόνο για τους 4.","key"],
    ["~15:00",'<span class="tag">🚆 μετακίνηση</span>Τρένο <b>SKM S2</b> από Lotnisko Chopina για <b>Warszawa Śródmieście</b>, περίπου 22 λεπτά, κάθε περίπου 30 λεπτά. Το S3 πάει στη Warszawa Centralna σε περίπου 21 λεπτά. Από το Śródmieście περίπου 600 μ. με τα πόδια ως το διαμέρισμα. Εναλλακτικά <b>δύο ταξί</b> (7 άτομα με αποσκευές δεν χωράνε σε ένα).'],
    ["~15:45","Check-in. Η ώρα check-in δεν επιβεβαιώθηκε. Στις 15:41 δύει ο ήλιος."],
    ["16:30–17:15","240 μ. ως την <b>Pijalnia E. Wedel</b> για ζεστή σοκολάτα. Αν έχει ανοίξει ο φωτεινός κήπος στο Park Świętokrzyski (800 μ.), είναι ωραία μικρή βόλτα. Αλλιώς αφήστε τον για την Παρασκευή."],
-   ["17:30",'<span class="tag">🍽️ φαγητό</span><b>Δείπνο: Stara Kamienica</b>, περίπου 55 μ. από το διαμέρισμα.',"meal"],
+   ["17:30",'<span class="tag">🍽️ φαγητό</span><b>Δείπνο: Mąka i Woda</b>, Chmielna 13A. Ναπολιτάνικη πίτσα και φρέσκα ζυμαρικά, περίπου 240 μ. με τα πόδια από την Wedel. Τρίτη ανοιχτά ως τις 22:00.',"meal"],
    ["19:00","Σπίτι, νωρίς για ύπνο."]
   ],
-  rest:{ kicker:"Δείπνο της ημέρας · 17:30", name:"Stara Kamienica", url:"https://stara-kamienica.com.pl/", addr:"Widok 8 · παραδοσιακή πολωνική με μοντέρνες πινελιές", place:"stara",
-    stats:["⭐ Google 4,6 από ~2.700 κριτικές","📍 ~55 μ. από το σπίτι","🕐 Καθημερινά 12:00–23:30","♿ προσβάσιμο σε αμαξίδιο (restaurantguru)"],
-    price:"420–550 zł", eur:"≈96–126 €", pnote:"για τους 7 · περίπου 90–110 zł ανά ενήλικα · χρέωση σέρβις 10% για λογαριασμούς πάνω από 150 zł",
-    why:"Στη γωνία από το διαμέρισμα, ιδανικό για βράδυ άφιξης. Αναφέρει ζωντανή μουσική.",
-    dishes:["<b>Staropolski żur na borowikach</b> (ξινή σούπα σίκαλης με μανιτάρια, λευκό λουκάνικο και αυγό, 38 zł)","<b>Mix wszystkich pierogów</b> (όλα τα πιερόγκι, 48 zł)","Για τα παιδιά: πιερόγκι με τυρί και πατάτα, ή ζωμό (rosół 34 zł) με χυλοπίτες","Schabowy (πανέ χοιρινή μπριζόλα) με πουρέ 49 zł · πιερόγκι 39–48 zł"],
-    caveat:"Το ακριβότερο γεύμα της λίστας. Το μενού στον ιστότοπο είναι του 2025, οι τιμές μπορεί να άλλαξαν. Τον τελευταίο μήνα υπάρχουν και κάποιες αρνητικές κριτικές, ανάμεσά τους μία που αναφέρει τροφική δηλητηρίαση.",
-    book:"Κράτηση συνιστάται για 7 άτομα. Ζητήστε χώρο για καρότσι και παιδικό κάθισμα.",
-    phones:["+48 22 114 43 33"], links:[["https://stara-kamienica.com.pl/?page_id=19","Μενού"],["https://pl.restaurantguru.com/Stara-Kamienica-Warsaw","restaurantguru"]] },
+  rest:{ kicker:"Δείπνο της ημέρας · 17:30", name:"Mąka i Woda", url:"https://makaiwoda.pl/", addr:"Chmielna 13A · ναπολιτάνικη πίτσα και φρέσκα ζυμαρικά", place:"maka",
+    stats:["🕐 Τρίτη 12:00–22:00","📍 ~240 μ. από την Wedel","🍕 πίτσα σε ξυλόφουρνο","🍝 ζυμαρικά κάθε μέρα"],
+    price:"25–38 zł", eur:"≈6–9 €", pnote:"ανά πίτσα στον κατάλογο delivery/παραλαβής · μαργαρίτα 34 zł · ζυμαρικά 29–38 zł · δεν υπάρχει ξεχωριστός τιμοκατάλογος για το τραπέζι",
+    why:"Ήπιο δείπνο άφιξης που βολεύει τα παιδιά: μαργαρίτα, απλά ζυμαρικά, και επιδόρπιο με πραλίνα. Στις 17:30 η Τρίτη είναι μέσα στο ωράριο (κλείνουν 22:00), και από τη σοκολάτα είναι λίγα λεπτά με τα πόδια.",
+    dishes:["<b>Margherita</b> (mozzarella di bufala, βασιλικός, παρμεζάνα, 34 zł)","<b>Marinara</b> (σκόρδο και ρίγανη, χωρίς τυρί, 25 zł)","Ζυμαρικά που φτιάχνουν κάθε μέρα: <b>raviolo con uovo</b> 29 zł, <b>tagliatelle με ragu</b> 33 zł, <b>trottole</b> με κοτόπουλο 31 zł","Για τα παιδιά: μαργαρίτα ή ζυμαρικά. Επιδόρπιο <b>saltimbocca con Nutella</b> 19 zł ή <b>budino</b> (καραμέλα και σοκολάτα) 17 zł"],
+    caveat:"Οι τιμές είναι από το PDF delivery/παραλαβής του ιστότοπου (έλεγχος 5/11/2026), όχι από κατάλογο τραπεζιού. Το «weekend family menu» σε εκείνο το PDF είναι για 17–19 Απριλίου, όχι για τον Νοέμβριο. Παιδικό κάθισμα και χώρος για καρότσι δεν επιβεβαιώθηκαν.",
+    book:"Για 7 άτομα πάρτε τηλέφωνο. Στον ιστότοπο δεν υπάρχει φόρμα κράτησης.",
+    phones:["+48 22 505 91 87"], email:"biuro@makaiwoda.pl", links:[["https://makaiwoda.pl/","Site"],["https://www.makaiwoda.pl/wp-content/uploads/menu/menu.pdf","Κατάλογος (PDF)"]] },
   backups:[{t:"Εφεδρικό φαγητό: Bar Mleczny Bambino", h:'Hoża 19 / Krucza 21, περίπου 500 μ. · Google <b>4,3 από 5.642</b> κριτικές · Δευτέρα–Παρασκευή 8:00–20:00.<br>Κλασικό milk bar (λαϊκό εστιατόριο-καντίνα). Οι κριτικές μιλούν για περίπου 30 zł για δύο πιάτα με κομπόστα.<div class="caveat">⚠️ Ουρές, και κριτικές λένε ότι δεν έχει τουαλέτα.</div><p>'+link("https://barbambino.pl/","barbambino.pl")+' · '+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-bambino-hoza-19/","gdziezjescwarszawa")+'</p>'}],
-  weather:"Αν βρέξει ή αν είστε κουρασμένοι: μόνο η σοκολάτα και το δείπνο. Η απόσταση είναι λίγα μέτρα."
+  weather:"Αν βρέξει ή αν είστε κουρασμένοι: σοκολάτα στη Wedel και δείπνο στη Mąka i Woda, περίπου 240 μ. πιο πέρα."
 },
 { id:"d18", tab:"Τετ 18", date:"2026-11-18", title:"Τετάρτη 18/11 · Copernicus", sub:"Όλη η μέρα σε κλειστό χώρο.",
   places:["apt","centrum","kopernik","prodiz","pkin","prasowy","harvest"],
@@ -404,7 +404,7 @@ var NOT_IN = [
 var CHECK = [
  {g:"Κρατήσεις & εισιτήρια", items:[
   ["bk-kop","Εισιτήρια Copernicus online για Τετ 18/11, ώρα 9:30 (πάρτε διαβατήρια/ταυτότητες για το μειωμένο)"],
-  ["bk-stara","Τραπέζι Stara Kamienica, Τρ 17/11 17:30 — +48 22 114 43 33"],
+  ["bk-maka","Τραπέζι Mąka i Woda, Τρ 17/11 17:30, Chmielna 13A — +48 22 505 91 87"],
   ["bk-prodiz","Τραπέζι Prodiż Warszawski, Τετ 18/11 13:15 — +48 22 127 71 71"],
   ["bk-wil","Τραπέζι Restauracja Wilanów, Πέμ 19/11 12:30 — +48 579 630 630"],
   ["bk-app","Εφαρμογή Jakdojade για εισιτήρια ΜΜΜ (75′ ζώνη 1: 4,40 zł· κάτω των 7 και καρότσι δωρεάν)"],
@@ -420,7 +420,7 @@ var CHECK = [
   ["c6","Copernicus: διαθεσιμότητα εισιτηρίων και πρόγραμμα πλανηταρίου 18/11· ποιο έγγραφο δέχονται για το μειωμένο"],
   ["c7","Neon Museum: ωράριο Τρίτης–Πέμπτης · Ταράτσα PKiN: τιμή για παιδιά"],
   ["c8a","Prodiż: το σετ της 18/11 και τα σκαλιά στην είσοδο"],
-  ["c8b","Stara Kamienica: τιμές 2026 (το μενού είναι του 2025)"],
+  ["c8b","Mąka i Woda: τιμές στην αίθουσα (ο αναρτημένος κατάλογος είναι delivery/παραλαβή) και αν χωράτε 7 με καρότσι"],
   ["c8c","Παιδικά καθίσματα: σε κανένα εστιατόριο δεν επιβεβαιώθηκαν"],
   ["c8d","Rusałka: τιμές 2026 και ωράριο Παρασκευής (17:00 ή 16:30)"],
   ["c9","Teatr Lalka: τιμή εισιτηρίου (60/55 zł από αναζήτηση) και θέσεις για ιδιώτες στις πρωινές καθημερινής"],
@@ -478,7 +478,7 @@ function dayPanel(d,i){
   return s+'</section>';
 }
 function summaryPanel(){
-  var rows=[["Τρ 17","Άφιξη 14:15 · GQ770","<b>Stara Kamienica</b> 17:30","Ζεστή σοκολάτα Wedel, μικρή βόλτα",0],
+  var rows=[["Τρ 17","Άφιξη 14:15 · GQ770","<b>Mąka i Woda</b> 17:30","Ζεστή σοκολάτα Wedel, μικρή βόλτα",0],
             ["Τετ 18","<b>Copernicus</b> (Bzzz! για τα μικρά)","<b>Prodiż Warszawski</b>, σετ 45 zł","Ύπνος μωρού· προαιρετικά Neon Museum",1],
             ["Πέμ 19","<b>Wilanów</b>, δωρεάν την Πέμπτη","<b>Restauracja Wilanów</b>","Επιστροφή πριν σκοτεινιάσει",2],
             ["Παρ 20","<b>Ζωολογικός</b> από 9:00","<b>Bar Mleczny Rusałka</b>","<b>Πρώτη μέρα Jarmark Warszawski</b>",3],
@@ -486,7 +486,7 @@ function summaryPanel(){
   var s='<section class="panel" role="tabpanel" id="p-summary"><h2 class="daytitle">Σύνοψη</h2><p class="daysub">Πάτα μια γραμμή για να πας στη μέρα.</p>';
   s+='<div class="card" style="overflow-x:auto"><table class="sum"><tr><th>Μέρα</th><th>Πρωί</th><th>Φαγητό</th><th>Απόγευμα</th></tr>'+rows.map(function(r){return '<tr data-go="'+r[4]+'"><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';}).join("")+'</table></div>';
   s+=skyCard();
-  s+='<div class="card"><h3>💶 Κόστος φαγητού για 7 (εκτίμηση)</h3><ul style="margin:.3rem 0;padding-left:20px"><li>17/11 Stara Kamienica: 420–550 zł (≈96–126 €)</li><li>18/11 Prodiż: 300–360 zł (≈69–82 €)</li><li>19/11 Restauracja Wilanów: 400–520 zł (≈92–119 €)</li><li>20/11 Rusałka: 150–200 zł (≈34–46 €)</li></ul><p style="margin:.4rem 0 0"><b>Σύνολο: περίπου 1.270–1.630 zł (≈290–375 €)</b> για τα τέσσερα γεύματα.</p></div>';
+  s+='<div class="card"><h3>💶 Κόστος φαγητού για 7 (εκτίμηση)</h3><ul style="margin:.3rem 0;padding-left:20px"><li>17/11 Mąka i Woda: 150–228 zł (≈34–52 €) για 6 κυρίως (6×25 ως 6×38 zł) από τον κατάλογο delivery, χωρίς ποτά· το μωρό μοιράζεται</li><li>18/11 Prodiż: 300–360 zł (≈69–82 €)</li><li>19/11 Restauracja Wilanów: 400–520 zł (≈92–119 €)</li><li>20/11 Rusałka: 150–200 zł (≈34–46 €)</li></ul><p style="margin:.4rem 0 0"><b>Σύνολο: περίπου 1.000–1.308 zł (≈229–299 €)</b> για τα τέσσερα γεύματα. Η Τρίτη είναι εκτίμηση από τιμές delivery, όχι λογαριασμός τραπεζιού.</p></div>';
   s+='<div class="card"><h3>🎟️ Εισιτήρια στο πρόγραμμα</h3><ul style="margin:.3rem 0;padding-left:20px"><li>Copernicus: ~260 zł (≈60 €)</li><li>Wilanów (Πέμπτη): δωρεάν· ακουστικός οδηγός παιδικής διαδρομής 14 zł</li><li>Ζωολογικός: ~181 zł (≈41 €)</li><li>Ταράτσα PKiN: 30 zł κανονικό / 25 zł μειωμένο (από αναζήτηση)</li></ul></div>';
   s+='<div class="card"><h3>🚇 Συγκοινωνίες</h3><p style="margin:0">Παιδιά κάτω των 7 δωρεάν, το καρότσι δεν πληρώνει ('+link("https://www.wtp.waw.pl/en/faq-questions-and-answers/","ZTM FAQ")+'). Ο 10χρονος πληρώνει. Εισιτήριο 75 λεπτών ζώνης 1: 4,40 zł ('+link("https://airporttocitycenter.com/warsaw-chopin/skm-km-train/","airporttocitycenter")+'). Μηχάνημα ή εφαρμογή Jakdojade. Για 7 άτομα με αποσκευές: <b>δύο αυτοκίνητα</b> Bolt/ταξί.</p></div>';
   s+='<div class="card"><h3>💱 Μετατροπή zł → €</h3><div class="conv"><input id="zl" type="number" inputmode="decimal" min="0" placeholder="π.χ. 100" aria-label="Ζλότι"> zł = <output id="eur">—</output></div><p style="font-size:.8rem;color:var(--muted);margin:.4rem 0 0">Με την ισοτιμία του προγράμματος, 4,37 zł ανά €. Κατά προσέγγιση.</p></div>';

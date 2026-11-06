@@ -138,12 +138,21 @@ html.unlocked #trip{display:block}
 .gatefield label{font-weight:700;font-size:.95rem}
 .gatefield input{font:inherit;width:100%;min-height:48px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 #gate .btn{margin-top:12px;width:100%;justify-content:center;cursor:pointer}
+.gateremember{display:flex;align-items:flex-start;gap:12px;margin-top:14px;cursor:pointer;font-size:.95rem;min-height:44px}
+.gateremember input{width:26px;height:26px;flex:0 0 26px;margin-top:2px;accent-color:var(--accent)}
 .gateerr{background:var(--warn-soft);border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:12px;padding:10px 12px;margin:12px 0 0;color:var(--warn);font-weight:700}
 .gatefine{font-size:.82rem;color:var(--muted);margin:.85rem 0 0}
+.lockbtn{margin-top:12px;min-height:44px;padding:8px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.9);background:transparent;color:#fff;font:inherit;font-weight:600;cursor:pointer}
 </style>
 <script>
-/* Unlock sticks for this tab only. The password check below is not real security. */
-try{ if(sessionStorage.getItem("warsaw2026-gate")==="1") document.documentElement.classList.add("unlocked"); }catch(e){}
+/* Light gate only. A remembered unlock is a version marker, never the password. */
+(function(){
+  function read(store, key){ try{ return store.getItem(key); }catch(e){ return null; } }
+  var persist=false, session=false;
+  try{ persist=localStorage.getItem("warsaw2026-gate")==="v1"; }catch(e){}
+  try{ session=sessionStorage.getItem("warsaw2026-gate")==="1"; }catch(e){}
+  if(persist||session) document.documentElement.classList.add("unlocked");
+})();
 </script>
 </head>
 <body>
@@ -160,9 +169,13 @@ try{ if(sessionStorage.getItem("warsaw2026-gate")==="1") document.documentElemen
         <label for="gatepw">Κωδικός</label>
         <input id="gatepw" name="pw" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
       </div>
+      <label class="gateremember" for="gateremember">
+        <input id="gateremember" type="checkbox" checked>
+        <span>Να με θυμάσαι σε αυτή τη συσκευή</span>
+      </label>
       <p id="gateerr" class="gateerr" role="alert" hidden></p>
       <button class="btn" type="submit">Είσοδος</button>
-      <p class="gatefine">Απλή απόκρυψη, όχι πραγματική ασφάλεια: ο κωδικός βρίσκεται μέσα στον κώδικα της σελίδας.</p>
+      <p class="gatefine">Αν μείνει τσεκαρισμένο, αυτός ο browser δεν ξαναζητά τον κωδικό. Σε ιδιωτική περιήγηση, ή αν σβήσεις τα δεδομένα της σελίδας, μπορεί να ξεχαστεί. Απλή απόκρυψη, όχι πραγματική ασφάλεια: ο κωδικός βρίσκεται μέσα στον κώδικα της σελίδας.</p>
     </form>
   </div>
 </div>
@@ -177,6 +190,7 @@ try{ if(sessionStorage.getItem("warsaw2026-gate")==="1") document.documentElemen
       <span class="pill">✈️ Αναχώρηση Σάβ 21/11 15:15</span>
       <span class="pill">✈️ Οικ. Νίκου · SKY express WZ8DPR</span>
     </div>
+    <button type="button" id="lockbtn" class="lockbtn">Κλείδωμα</button>
   </div>
 </header>
 
@@ -861,20 +875,36 @@ else { var m=document.getElementById("map"); if(m) m.outerHTML='<div class="mapf
 /* Client-side gate. Exact, case-sensitive password. Anyone who can view source can read it. */
 (function(){
   var KEY="warsaw2026-gate";
+  var SVAL="1";
+  var LVAL="v1";
   var PASS="koumparious_10_26";
   var TRIP_TITLE="Βαρσοβία 17–21/11/2026 · Πρόγραμμα";
+  var GATE_TITLE="Πρόγραμμα ταξιδιού";
   var form=document.getElementById("gateform");
   var input=document.getElementById("gatepw");
   var err=document.getElementById("gateerr");
+  var remember=document.getElementById("gateremember");
+  var lockBtn=document.getElementById("lockbtn");
+  function read(store){ try{ return store.getItem(KEY); }catch(e){ return null; } }
+  function write(store, val){ try{ store.setItem(KEY, val); return true; }catch(e){ return false; } }
+  function clear(store){ try{ store.removeItem(KEY); }catch(e){} }
   function reveal(){
     document.documentElement.classList.add("unlocked");
     document.title=TRIP_TITLE;
+    if(input) input.value="";
     if(typeof show==="function") setTimeout(function(){ show(cur,false); }, 60);
   }
-  if(document.documentElement.classList.contains("unlocked")){ document.title=TRIP_TITLE; return; }
-  if(input) input.focus();
-  input.addEventListener("input",function(){ err.hidden=true; input.removeAttribute("aria-invalid"); });
-  form.addEventListener("submit",function(e){
+  function lock(){
+    clear(localStorage);
+    clear(sessionStorage);
+    document.documentElement.classList.remove("unlocked");
+    document.title=GATE_TITLE;
+    if(err) err.hidden=true;
+    if(input){ input.value=""; input.removeAttribute("aria-invalid"); input.focus(); }
+  }
+  if(lockBtn) lockBtn.addEventListener("click", lock);
+  if(input) input.addEventListener("input",function(){ err.hidden=true; input.removeAttribute("aria-invalid"); });
+  if(form) form.addEventListener("submit",function(e){
     e.preventDefault();
     var v=input.value;
     if(v===""){
@@ -885,17 +915,27 @@ else { var m=document.getElementById("map"); if(m) m.outerHTML='<div class="mapf
       return;
     }
     if(v!==PASS){
+      clearField();
       err.hidden=false;
       err.textContent="Ο κωδικός δεν είναι σωστός. Είναι ευαίσθητος στα πεζά και τα κεφαλαία.";
       input.setAttribute("aria-invalid","true");
-      input.select();
+      input.focus();
       return;
     }
     err.hidden=true;
     input.removeAttribute("aria-invalid");
-    try{ sessionStorage.setItem(KEY,"1"); }catch(ex){}
+    if(remember&&remember.checked){
+      if(!write(localStorage, LVAL)) write(sessionStorage, SVAL);
+      else clear(sessionStorage);
+    }else{
+      clear(localStorage);
+      write(sessionStorage, SVAL);
+    }
     reveal();
   });
+  function clearField(){ input.value=""; }
+  if(document.documentElement.classList.contains("unlocked")){ document.title=TRIP_TITLE; return; }
+  if(input) input.focus();
 })();
 </script>
 </body>

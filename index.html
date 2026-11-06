@@ -243,7 +243,10 @@ var P = {
   zoo:{n:"Ζωολογικός κήπος", ll:[52.2591045,21.0209842], k:"act", i:"🦒", q:"Warszawskie ZOO, Ratuszowa 1/3, Warszawa", d:"Ratuszowa 1/3. Νοέμβριος 9:00–16:00, τελευταία είσοδος 15:00."},
   rusalka:{n:"Bar Mleczny Rusałka", ll:[52.2525208,21.0305753], k:"food", i:"🍽️", q:"Bar Mleczny Rusałka, Floriańska 14, Warszawa", d:"Floriańska 14, ~900 μ. από τον ζωολογικό. ☎ +48 22 619 52 00"},
   pyzy:{n:"Pyzy Flaki Gorące (εφεδρικό)", ll:[52.2530500,21.0409661], k:"backup", i:"🥟", q:"Pyzy Flaki Gorące, Brzeska 29/31, Warszawa", d:"Brzeska 29/31, Praga. Δευ–Σάβ 12:00–22:00."},
-  baj:{n:"Teatr Baj", ll:[52.2524956,21.0346245], k:"backup", i:"🎭", q:"Teatr Baj, Jagiellońska 28, Warszawa", d:"Jagiellońska 28, Praga. Παραστάσεις στα πολωνικά."}
+  baj:{n:"Teatr Baj", ll:[52.2524956,21.0346245], k:"backup", i:"🎭", q:"Teatr Baj, Jagiellońska 28, Warszawa", d:"Jagiellońska 28, Praga. Παραστάσεις στα πολωνικά."},
+  zamkowy:{n:"Plac Zamkowy", ll:[52.2477175,21.0137423], k:"act", i:"🏰", q:"Plac Zamkowy, Warszawa", d:"Αφετηρία της χαλαρής βόλτας, Τετ 18/11 ~16:45."},
+  rynek:{n:"Rynek Starego Miasta", ll:[52.2497655,21.0125178], k:"act", i:"🏘️", q:"Rynek Starego Miasta, Warszawa", d:"Πλατεία της Παλιάς Πόλης. Από το Plac Zamkowy με μικρά δρομάκια, αργά, με καρότσι."},
+  krakprzed:{n:"Krakowskie Przedmieście", ll:[52.2448919,21.0140327], k:"act", i:"🎹", q:"Krakowskie Przedmieście, Warszawa", d:"Προαιρετική προέκταση, μόνο αν υπάρχει όρεξη. Εκεί και μουσικά παγκάκια του Chopin."}
 };
 
 /* ---------- Helpers ---------- */
@@ -313,6 +316,11 @@ var PLACE_LINKS=[
  ["Ελευθέριος Βενιζέλος","Eleftherios Venizelos Airport, Athens"],
  ["Βασιλική Οδός","Trakt Królewski, Warszawa"],
  ["Παλιά Πόλη","Stare Miasto, Warszawa"],
+ ["μουσικά παγκάκια του Chopin","Ławka Chopina, Krakowskie Przedmieście, Warszawa"],
+ ["Μουσείο Chopin","Muzeum Fryderyka Chopina, Warszawa"],
+ ["Rynek Starego Miasta","rynek"],
+ ["Krakowskie Przedmieście","krakprzed"],
+ ["Plac Zamkowy","zamkowy"],
  ["Plac Centralny","Plac Centralny, Warszawa"],
  ["Pałac Staszica","Pałac Staszica, Warszawa"],
  ["Zimowy Narodowy","PGE Narodowy, Warszawa"],
@@ -396,15 +404,15 @@ var DAYS = [
   backups:[{t:"Εφεδρικό φαγητό: Bar Mleczny Bambino", h:'Hoża 19 / Krucza 21, περίπου 500 μ. · Google <b>4,3 από 5.642</b> κριτικές · Δευτέρα–Παρασκευή 8:00–20:00.<br>Κλασικό milk bar (λαϊκό εστιατόριο-καντίνα). Οι κριτικές μιλούν για περίπου 30 zł για δύο πιάτα με κομπόστα.<div class="caveat">⚠️ Ουρές, και κριτικές λένε ότι δεν έχει τουαλέτα.</div><p>'+link("https://barbambino.pl/","barbambino.pl")+' · '+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-bambino-hoza-19/","gdziezjescwarszawa")+'</p>'}],
   weather:"Αν βρέξει ή αν είστε κουρασμένοι: σοκολάτα στη Wedel και δείπνο στη Mąka i Woda, περίπου 240 μ. πιο πέρα."
 },
-{ id:"d18", tab:"Τετ 18", date:"2026-11-18", title:"Τετάρτη 18/11 · Copernicus", sub:"Όλη η μέρα σε κλειστό χώρο.",
-  places:["apt","centrum","kopernik","prodiz","pkin","prasowy","harvest"],
+{ id:"d18", tab:"Τετ 18", date:"2026-11-18", title:"Τετάρτη 18/11 · Copernicus", sub:"Copernicus το πρωί, ύπνος, και χαλαρή βόλτα στην Παλιά Πόλη.",
+  places:["apt","centrum","kopernik","prodiz","prasowy","harvest","krakprzed","zamkowy","rynek"],
   tl:[
    ["8:45",'<span class="tag">Ⓜ️ μετακίνηση</span>Μετρό <b>M1</b> από Centrum (περίπου 300 μ.) για <b>Świętokrzyska</b> (1 στάση). Αλλαγή στο <b>M2</b> για <b>Centrum Nauki Kopernik</b> (2 στάσεις). Χρησιμοποιήστε τους ανελκυστήρες. Πόρτα-πόρτα περίπου 20–25 λεπτά (εκτίμηση).'],
    ["9:15–12:45",'<b>Copernicus.</b> Αγοράστε εισιτήρια online για ώρα 9:30 (μπαίνετε από 30′ πριν ως 60′ μετά). <b>Χωριστείτε:</b> ένας ενήλικας στο <b>Bzzz!</b> με το 6,5χρονο και το μωρό (κάθε ώρα στο :00, 45 λεπτά, το καρότσι μένει στην είσοδο). Οι άλλοι με τον 10χρονο στις μεγάλες εκθέσεις. Μετά αλλάζετε. <b>Δεν επιτρέπεται επανείσοδος</b>, οπότε σνακ μέσα στους ειδικούς χώρους.<br>💶 Περίπου <b>260 zł (≈60 €)</b>: 4×48 + 2×34, το μωρό δωρεάν. '+link("https://www.kopernik.org.pl/en/visit/opening-hours","Ωράριο")+' · '+link("https://www.kopernik.org.pl/wizyta/ceny-biletow","Τιμές"),"key"],
    ["12:45–13:15",'<span class="tag">🚕 μετακίνηση</span>Ταξί περίπου 10 λεπτά (εκτίμηση), ή M2 ως Świętokrzyska και περίπου 1 χλμ με τα πόδια. Το μωρό μπορεί να κοιμηθεί στο καρότσι.'],
    ["13:15–14:30",'<span class="tag">🍽️ φαγητό</span><b>Μεσημεριανό: Prodiż Warszawski</b>, σετ ημέρας. 716 μ. από το διαμέρισμα.',"meal"],
    ["14:45–16:30","Διαμέρισμα, ύπνος και ξεκούραση."],
-   ["16:45–17:45","Προαιρετικά <b>Neon Museum</b> (PKiN, 680 μ.). Ταιριάζει στα 6,5 και 10, το μωρό απλώς κοιτάζει. Την Τετάρτη ήταν 11:00–18:00 στον έλεγχο της 4/10."],
+   ["16:45–18:15",'<b>Παλιά Πόλη</b>, χαλαρή βόλτα περίπου <b>60–90 λεπτά</b>, ξεκίνημα ~16:45 (μετά τις 16:00 έχει ήδη σκοτεινιάσει). Διαδρομή: <b>Plac Zamkowy</b> → <b>Rynek Starego Miasta</b> και μικρά δρομάκια, αργά, με τα παιδιά και το καρότσι. Αν έχετε όρεξη, προαιρετικά προς <b>Krakowskie Przedmieście</b> και τα <b>μουσικά παγκάκια του Chopin</b>· αλλιώς γυρίζετε. Το <b>Μουσείο Chopin</b> είναι κλειστό όλο το 2026 για ανακαίνιση, γι’ αυτό δεν είναι επίσκεψη. '+link("https://muzeum.nifc.pl/en/muzeum/aktualnosci/1724/","nifc.pl"),"key"],
    ["Βράδυ","Ελαφρύ φαγητό στο σπίτι."]
   ],
   rest:{ kicker:"Μεσημεριανό της ημέρας · 13:15", name:"Prodiż Warszawski", url:"https://prodizwarszawski.pl/obiady/", addr:"Poznańska 16 · μοντέρνα πολωνική κουζίνα", place:"prodiz",
@@ -420,7 +428,7 @@ var DAYS = [
    {t:"Εφεδρικό δίπλα στο Copernicus: Bar Mleczny Prasowy Powiśle", h:'Zajęcza 1A, περίπου 290 μ. · Google <b>4,2 από 875</b> κριτικές · Δευτέρα–Παρασκευή 9:00–19:00.<br>Μοντέρνο milk bar. Οι κριτικές επαινούν τα πιερόγκι, τη ντοματόσουπα και τα racuchy (τηγανίτες με μήλο).<div class="caveat">⚠️ Η ποιότητα ποικίλλει και ο χώρος είναι στενός.</div><p>'+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-prasowy-powisle-zajecza-1a-u1/","gdziezjescwarszawa")+'</p>'},
    {t:"Εναλλακτικά: Harvest (Elektrownia Powiśle)", h:'Dobra 42, 120 μ. από το Copernicus. Μοντέρνα πολωνική κουζίνα και γωνιά για παιδιά. Κυρίως πιάτα 39–129 zł.<div class="caveat">⚠️ Άνοιξε τον Ιούνιο του 2026 και έχει λίγες κριτικές.</div><p>'+link("https://warszawa.naszemiasto.pl/tradycyjna-kuchnia-w-nowoczesnej-odslonie-nowa-restauracja-w-elektrowni-powisle/ar/c17p2-29083761","Nasze Miasto")+' · '+link("https://elektrowniapowisle.com/restaurants/harvest/","Elektrownia")+'</p>'}
   ],
-  weather:"Η μέρα είναι ήδη σε κλειστό χώρο. <b>Αν δεν βρείτε εισιτήρια για το Copernicus:</b> αλλάξτε με την Παρασκευή, που είναι ανοιχτό ως τις 20:00. Αλλιώς Neon Museum και ταράτσα PKiN."
+  weather:"<b>Αν βρέχει ή αν είστε κουρασμένοι:</b> κόβετε τη βόλτα στην Παλιά Πόλη και μένετε στο σπίτι. <b>Αν δεν βρείτε εισιτήρια για το Copernicus:</b> αλλάξτε με την Παρασκευή, που είναι ανοιχτό ως τις 20:00."
 },
 { id:"d19", tab:"Πέμ 19", date:"2026-11-19", title:"Πέμπτη 19/11 · Wilanów", sub:"Παλάτι και πάρκο, δωρεάν την Πέμπτη. Επιστροφή πριν σκοτεινιάσει.",
   places:["apt","wilanow","restwil","pkin","dawne"],
@@ -446,7 +454,7 @@ var DAYS = [
    {t:"Ελαφρύ φαγητό: Allegato Café (αυλή παλατιού)", h:'Δευτέρα–Παρασκευή 9:00–17:30. <a class="btn food" href="tel:+48602688399">📞 602 688 399</a><p>'+link("https://wilanow-palac.pl/en/opening-hours","Ωράριο")+'</p>'},
    {t:"Αν η μέρα μεταφερθεί στο κέντρο: Dawne Smaki", h:'Nowy Świat 49, περίπου 470 μ. από το σπίτι. Παραδοσιακή κουζίνα, καθημερινά 11:00–23:00. Google <b>4,2 από 1.294</b> σύμφωνα με τα Orły Gastronomii.<div class="caveat">⚠️ Χαμηλότερη βαθμολογία και τιμές που δεν ελέγχθηκαν.</div><div class="btns"><a class="btn food" href="tel:+48224658320">📞 +48 22 465 83 20</a></div><p>'+link("https://dawnesmaki.eatbu.com/?lang=en","Site")+' · '+link("https://www.orlygastronomii.pl/profile-284563-dawne-smaki-kulinarne-tradycje-polski","Orły Gastronomii")+'</p>'}
   ],
-  weather:"<b>Αν φυσάει πολύ (κλείνει το πάρκο) ή πέφτει βροχή με αέρα:</b> μείνετε στο κέντρο. Ταράτσα PKiN το πρωί, ή <b>Teatr Lalka στις 11:30</b> «Śpiąca królewna» (στα πολωνικά), Neon Museum, και φαγητό στο Dawne Smaki (εφεδρικό)."
+  weather:"<b>Αν φυσάει πολύ (κλείνει το πάρκο) ή πέφτει βροχή με αέρα:</b> μείνετε στο κέντρο. Ταράτσα PKiN το πρωί, ή <b>Teatr Lalka στις 11:30</b> «Śpiąca królewna» (στα πολωνικά), και φαγητό στο Dawne Smaki (εφεδρικό)."
 },
 { id:"d20", tab:"Παρ 20", date:"2026-11-20", title:"Παρασκευή 20/11 · Ζωολογικός & χριστουγεννιάτικη αγορά", sub:"Ζωολογικός το πρωί, milk bar, ύπνος, και η πρώτη μέρα του Jarmark το βράδυ.",
   places:["apt","centrum","wilenski","zoo","rusalka","pyzy","pkin","parksw","kopernik"],
@@ -511,7 +519,7 @@ var EVENTS = [
   l:[["https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο"],["https://zoo.waw.pl/wizyta-w-zoo/bilety","Τιμές"]]},
  {t:"Ταράτσα θέας PKiN, 30ός όροφος", w:"Καθημερινά 10:00–20:00 · χωρίς κρατήσεις", b:[["","Στο πρόγραμμα: Σάβ 21"],["no","Τιμή μικρών παιδιών ανεπιβεβαίωτη"]],
   h:'Σύμφωνα με αναζήτηση, κανονικό 30 zł και μειωμένο 25 zł.', l:[["https://pkin.pl/o-tarasie-widokowym/","pkin.pl"]]},
- {t:"Neon Museum (PKiN, 4ος όροφος)", w:"Ανελκυστήρας από το επίπεδο −1 · Δευ & Κυρ 11:00–18:00, Παρ 11:00–19:00", b:[["","Προαιρετικό: Τετ 18"],["no","Ωράριο Τρ–Πέμ ανεπιβεβαίωτο"]],
+ {t:"Neon Museum (PKiN, 4ος όροφος)", w:"Ανελκυστήρας από το επίπεδο −1 · Δευ & Κυρ 11:00–18:00, Παρ 11:00–19:00", b:[["no","Εκτός προγράμματος"],["no","Ωράριο Τρ–Πέμ ανεπιβεβαίωτο"]],
   h:'Τιμές: 25 zł κανονικό, 18 zł μειωμένο, κάτω των 6 δωρεάν. Τρίτη–Πέμπτη η σελίδα δεν έδειξε ώρες στις 8/10· στις 4/10 η Τετάρτη έδειχνε 11:00–18:00.', l:[["https://www.neonmuzeum.org/visit-museum","neonmuzeum.org"]]},
  {t:"Pijalnia Czekolady E. Wedel (Szpitalna 8)", w:"Δευτέρα–Σάββατο 9:00–22:00 (δευτερεύουσα πηγή — ελέγξτε το)", b:[["","Στο πρόγραμμα: Τρ 17"]],
   h:'Το ιστορικό σοκολατοπωλείο της Wedel, 240 μ. από το διαμέρισμα. Ζεστή σοκολάτα για καλωσόρισμα.', l:[["https://gdziezjescwarszawa.com/miejsca/pijalnia-czekolady-e-wedel-szpitalna-8/","gdziezjescwarszawa"],["https://wedelpijalnie.pl/lokale","Επίσημη σελίδα"]]}
@@ -544,7 +552,7 @@ var CHECK = [
   ["c4","Królewski Ogród Światła 2026/27 στο Wilanów: αν θα γίνει και πότε"],
   ["c5","Χρόνοι λεωφορείων 116/180 και ταξί· ποιο τραμ πάει στον ζωολογικό· τιμή εισιτηρίου ΜΜΜ για τον 10χρονο"],
   ["c6","Copernicus: διαθεσιμότητα εισιτηρίων και πρόγραμμα πλανηταρίου 18/11· ποιο έγγραφο δέχονται για το μειωμένο"],
-  ["c7","Neon Museum: ωράριο Τρίτης–Πέμπτης · Ταράτσα PKiN: τιμή για παιδιά"],
+  ["c7","Ταράτσα PKiN: τιμή για παιδιά"],
   ["c8a","Prodiż: το σετ της 18/11 και τα σκαλιά στην είσοδο"],
   ["c8b","Mąka i Woda: τιμές στην αίθουσα (ο αναρτημένος κατάλογος είναι delivery/παραλαβή) και αν χωράτε 7 με καρότσι"],
   ["c8c","Παιδικά καθίσματα: σε κανένα εστιατόριο δεν επιβεβαιώθηκαν"],
@@ -640,7 +648,7 @@ function dayPanel(d,i){
 }
 function summaryPanel(){
   var rows=[["Τρ 17","Άφιξη 14:15 · GQ770","<b>Mąka i Woda</b> 17:30","Ζεστή σοκολάτα Wedel, μικρή βόλτα",0],
-            ["Τετ 18","<b>Copernicus</b> (Bzzz! για τα μικρά)","<b>Prodiż Warszawski</b>, σετ 45 zł","Ύπνος μωρού· προαιρετικά Neon Museum",1],
+            ["Τετ 18","<b>Copernicus</b> (Bzzz! για τα μικρά)","<b>Prodiż Warszawski</b>, σετ 45 zł","Ύπνος μωρού· Παλιά Πόλη ~16:45",1],
             ["Πέμ 19","<b>Wilanów</b>, δωρεάν την Πέμπτη","<b>Restauracja Wilanów</b>","Επιστροφή πριν σκοτεινιάσει",2],
             ["Παρ 20","<b>Ζωολογικός</b> από 9:00","<b>Bar Mleczny Rusałka</b>","<b>Πρώτη μέρα Jarmark Warszawski</b>",3],
             ["Σάβ 21","Ταράτσα PKiN, βόλτα στην αγορά","— (αναχώρηση)","Αεροδρόμιο 12:15–12:30 · GQ771 15:15",4]];

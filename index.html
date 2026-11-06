@@ -83,6 +83,8 @@ details.backup summary::-webkit-details-marker{display:none}
 details.backup summary:before{content:"＋";margin-right:8px;color:var(--accent)}
 details[open].backup summary:before{content:"－"}
 details.backup .inner{padding-bottom:12px;font-size:.95rem}
+.optional{border-left:6px solid var(--accent-2)}
+.optional .kicker{font-size:.8rem;color:var(--accent-2);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .weather{border-left:6px solid #4b8bd6}
 .weather h3:before{content:"☔ "}
 .mapcard{padding:0;overflow:hidden}
@@ -246,7 +248,10 @@ var P = {
   baj:{n:"Teatr Baj", ll:[52.2524956,21.0346245], k:"backup", i:"🎭", q:"Teatr Baj, Jagiellońska 28, Warszawa", d:"Jagiellońska 28, Praga. Παραστάσεις στα πολωνικά."},
   zamkowy:{n:"Plac Zamkowy", ll:[52.2477175,21.0137423], k:"act", i:"🏰", q:"Plac Zamkowy, Warszawa", d:"Αφετηρία της χαλαρής βόλτας, Τετ 18/11 ~16:45."},
   rynek:{n:"Rynek Starego Miasta", ll:[52.2497655,21.0125178], k:"act", i:"🏘️", q:"Rynek Starego Miasta, Warszawa", d:"Πλατεία της Παλιάς Πόλης. Από το Plac Zamkowy με μικρά δρομάκια, αργά, με καρότσι."},
-  krakprzed:{n:"Krakowskie Przedmieście", ll:[52.2448919,21.0140327], k:"act", i:"🎹", q:"Krakowskie Przedmieście, Warszawa", d:"Προαιρετική προέκταση, μόνο αν υπάρχει όρεξη. Εκεί και μουσικά παγκάκια του Chopin."}
+  krakprzed:{n:"Krakowskie Przedmieście", ll:[52.2448919,21.0140327], k:"act", i:"🎹", q:"Krakowskie Przedmieście, Warszawa", d:"Προαιρετική προέκταση, μόνο αν υπάρχει όρεξη. Εκεί και μουσικά παγκάκια του Chopin."},
+  planet:{n:"Πλανητάριο Heavens of Copernicus", ll:[52.2420172,21.0293818], k:"act", i:"🌌", q:"Heavens of Copernicus Planetarium Warszawa", d:"Στον χώρο του Copernicus. Προαιρετικό την Τετάρτη, μέσα από την ώρα των εκθέσεων."},
+  plakat:{n:"Muzeum Plakatu w Wilanowie", ll:[52.1642335,21.0881420], k:"act", i:"🖼️", q:"Muzeum Plakatu w Wilanowie", d:"Κοντά στο παλάτι. Προαιρετικό την Πέμπτη, με εισιτήριο."},
+  hultaj:{n:"Hultajka", ll:[52.2521504,21.0332728], k:"act", i:"🧸", q:"Hultajka Floriańska 6 Warszawa", d:"Floriańska 6, κοντά στη Rusałka. Προαιρετικό την Παρασκευή, με εισιτήριο."}
 };
 
 /* ---------- Helpers ---------- */
@@ -292,7 +297,14 @@ var PLACE_LINKS=[
  ["Ζωολογικός","zoo"],
  ["Teatr Lalka","Teatr Lalka, Warszawa"],
  ["Teatr Baj","baj"],
- ["Neon Museum","Neon Museum, Warszawa"],
+ ["Πλανητάριο Heavens of Copernicus","planet"],
+ ["πλανητάριο Heavens of Copernicus","planet"],
+ ["πλανητάριο","planet"],
+ ["Muzeum Plakatu w Wilanowie","plakat"],
+ ["Παιδική χαρά του ζωολογικού","zoo"],
+ ["παιδική χαρά του ζωολογικού","zoo"],
+ ["σαφάρι τρενάκι","zoo"],
+ ["Neon Museum","Neon Muzeum Pałac Kultury Warszawa"],
  ["Jarmark Warszawski","Plac Defilad, Warszawa"],
  ["Królewski Ogród Światła","wilanow"],
  ["Παλάτι του Wilanów","wilanow"],
@@ -310,6 +322,8 @@ var PLACE_LINKS=[
  ["Zajęcza 1A","prasowy"],
  ["Nowy Świat 49","dawne"],
  ["Floriańska 14","rusalka"],
+ ["Floriańska 6","hultaj"],
+ ["Hultajka","hultaj"],
  ["Brzeska 29/31","pyzy"],
  ["Jagiellońska 28","baj"],
  ["Νίκος Καζαντζάκης","Nikos Kazantzakis Airport, Heraklion"],
@@ -405,7 +419,7 @@ var DAYS = [
   weather:"Αν βρέξει ή αν είστε κουρασμένοι: σοκολάτα στη Wedel και δείπνο στη Mąka i Woda, περίπου 240 μ. πιο πέρα."
 },
 { id:"d18", tab:"Τετ 18", date:"2026-11-18", title:"Τετάρτη 18/11 · Copernicus", sub:"Copernicus το πρωί, ύπνος, και χαλαρή βόλτα στην Παλιά Πόλη.",
-  places:["apt","centrum","kopernik","prodiz","prasowy","harvest","krakprzed","zamkowy","rynek"],
+  places:["apt","centrum","kopernik","planet","prodiz","prasowy","harvest","krakprzed","zamkowy","rynek"],
   tl:[
    ["8:45",'<span class="tag">Ⓜ️ μετακίνηση</span>Μετρό <b>M1</b> από Centrum (περίπου 300 μ.) για <b>Świętokrzyska</b> (1 στάση). Αλλαγή στο <b>M2</b> για <b>Centrum Nauki Kopernik</b> (2 στάσεις). Χρησιμοποιήστε τους ανελκυστήρες. Πόρτα-πόρτα περίπου 20–25 λεπτά (εκτίμηση).'],
    ["9:15–12:45",'<b>Copernicus.</b> Αγοράστε εισιτήρια online για ώρα 9:30 (μπαίνετε από 30′ πριν ως 60′ μετά). <b>Χωριστείτε:</b> ένας ενήλικας στο <b>Bzzz!</b> με το 6,5χρονο και το μωρό (κάθε ώρα στο :00, 45 λεπτά, το καρότσι μένει στην είσοδο). Οι άλλοι με τον 10χρονο στις μεγάλες εκθέσεις. Μετά αλλάζετε. <b>Δεν επιτρέπεται επανείσοδος</b>, οπότε σνακ μέσα στους ειδικούς χώρους.<br>💶 Περίπου <b>260 zł (≈60 €)</b>: 4×48 + 2×34, το μωρό δωρεάν. '+link("https://www.kopernik.org.pl/en/visit/opening-hours","Ωράριο")+' · '+link("https://www.kopernik.org.pl/wizyta/ceny-biletow","Τιμές"),"key"],
@@ -428,10 +442,13 @@ var DAYS = [
    {t:"Εφεδρικό δίπλα στο Copernicus: Bar Mleczny Prasowy Powiśle", h:'Zajęcza 1A, περίπου 290 μ. · Google <b>4,2 από 875</b> κριτικές · Δευτέρα–Παρασκευή 9:00–19:00.<br>Μοντέρνο milk bar. Οι κριτικές επαινούν τα πιερόγκι, τη ντοματόσουπα και τα racuchy (τηγανίτες με μήλο).<div class="caveat">⚠️ Η ποιότητα ποικίλλει και ο χώρος είναι στενός.</div><p>'+link("https://gdziezjescwarszawa.com/miejsca/bar-mleczny-prasowy-powisle-zajecza-1a-u1/","gdziezjescwarszawa")+'</p>'},
    {t:"Εναλλακτικά: Harvest (Elektrownia Powiśle)", h:'Dobra 42, 120 μ. από το Copernicus. Μοντέρνα πολωνική κουζίνα και γωνιά για παιδιά. Κυρίως πιάτα 39–129 zł.<div class="caveat">⚠️ Άνοιξε τον Ιούνιο του 2026 και έχει λίγες κριτικές.</div><p>'+link("https://warszawa.naszemiasto.pl/tradycyjna-kuchnia-w-nowoczesnej-odslonie-nowa-restauracja-w-elektrowni-powisle/ar/c17p2-29083761","Nasze Miasto")+' · '+link("https://elektrowniapowisle.com/restaurants/harvest/","Elektrownia")+'</p>'}
   ],
+  opt:[
+   ["Πλανητάριο Heavens of Copernicus","Στον ίδιο χώρο με τις εκθέσεις, περίπου 2–5 λεπτά με τα πόδια. Εκτίμηση 45–70 λεπτά. Κυρίως κλειστός χώρος, για τα 6,5 και τα 10· το σκοτάδι και η ησυχία δεν ταιριάζουν ιδιαίτερα στο μωρό. Αν το διαλέξετε, βγαίνει από την ώρα των εκθέσεων, όχι από το φαγητό, τον ύπνο ή την Παλιά Πόλη. Ξεχωριστό εισιτήριο και κράτηση. Παράσταση κατάλληλη για την ηλικία και κατανοητή γλωσσικά, ανάλογα με το πρόγραμμα της 18/11· δεν είναι δεδομένη συγκεκριμένη προβολή εκείνη τη μέρα. Παράδειγμα παιδικής: One World, One Sky (3+). "+link("https://www.kopernik.org.pl/en/visit/opening-hours","Ωράριο")+" · "+link("https://www.kopernik.org.pl/en/visit/ticket-price","Εισιτήρια")+" · "+link("https://www.kopernik.org.pl/en/planetarium/one-world-one-sky","Παράδειγμα 3+")]
+  ],
   weather:"<b>Αν βρέχει ή αν είστε κουρασμένοι:</b> κόβετε τη βόλτα στην Παλιά Πόλη και μένετε στο σπίτι. <b>Αν δεν βρείτε εισιτήρια για το Copernicus:</b> αλλάξτε με την Παρασκευή, που είναι ανοιχτό ως τις 20:00."
 },
 { id:"d19", tab:"Πέμ 19", date:"2026-11-19", title:"Πέμπτη 19/11 · Wilanów", sub:"Παλάτι και πάρκο, δωρεάν την Πέμπτη. Επιστροφή πριν σκοτεινιάσει.",
-  places:["apt","wilanow","restwil","pkin","dawne"],
+  places:["apt","wilanow","plakat","restwil","pkin","dawne"],
   tl:[
    ["9:15",'<span class="tag">🚌 μετακίνηση</span>Λεωφορείο <b>116 ή 180</b> από τη στάση <b>Foksal</b> (Nowy Świat, περίπου 450 μ.) ή <b>Pl. Trzech Krzyży</b> ως το τέρμα <b>«Wilanów»</b>, δίπλα στο παλάτι. Περίπου 19 στάσεις, <b>περίπου 35–40 λεπτά (εκτίμηση)</b>. Δείτε το Jakdojade. Εναλλακτικά δύο ταξί, περίπου 20–25 λεπτά (εκτίμηση).'],
    ["10:00",'Ταμείο, στο κίτρινο κτίριο μπροστά στο παλάτι: πάρτε <b>δωρεάν εισιτήρια</b> (wejściówki) για πάρκο και παλάτι. Πηγαίνετε νωρίς, τα εισιτήρια για το παλάτι είναι περιορισμένα. '+link("https://wilanow-palac.pl/bilety","Εισιτήρια")+' · '+link("https://wilanow-palac.pl/en/opening-hours","Ωράριο"),"key"],
@@ -454,10 +471,13 @@ var DAYS = [
    {t:"Ελαφρύ φαγητό: Allegato Café (αυλή παλατιού)", h:'Δευτέρα–Παρασκευή 9:00–17:30. <a class="btn food" href="tel:+48602688399">📞 602 688 399</a><p>'+link("https://wilanow-palac.pl/en/opening-hours","Ωράριο")+'</p>'},
    {t:"Αν η μέρα μεταφερθεί στο κέντρο: Dawne Smaki", h:'Nowy Świat 49, περίπου 470 μ. από το σπίτι. Παραδοσιακή κουζίνα, καθημερινά 11:00–23:00. Google <b>4,2 από 1.294</b> σύμφωνα με τα Orły Gastronomii.<div class="caveat">⚠️ Χαμηλότερη βαθμολογία και τιμές που δεν ελέγχθηκαν.</div><div class="btns"><a class="btn food" href="tel:+48224658320">📞 +48 22 465 83 20</a></div><p>'+link("https://dawnesmaki.eatbu.com/?lang=en","Site")+' · '+link("https://www.orlygastronomii.pl/profile-284563-dawne-smaki-kulinarne-tradycje-polski","Orły Gastronomii")+'</p>'}
   ],
+  opt:[
+   ["Muzeum Plakatu w Wilanowie","Περίπου 3–5 λεπτά με τα πόδια από το παλάτι. Εκτίμηση επίσκεψης 30–45 λεπτά. Κλειστός χώρος με χρωματιστές αφίσες, πιο ήσυχη επιλογή για παιδί που κοιτάζει εικόνες. Δεν είναι παιδοχώρος ούτε στάση για όλους. Δημοσιευμένο ωράριο Πέμπτης 10:00–18:00, με εισιτήριο. Να ξαναελεγχθεί. "+link("https://muzeumplakatu.mnw.pl/wizyta","Επίσκεψη")]
+  ],
   weather:"<b>Αν φυσάει πολύ (κλείνει το πάρκο) ή πέφτει βροχή με αέρα:</b> μείνετε στο κέντρο. Ταράτσα PKiN το πρωί, ή <b>Teatr Lalka στις 11:30</b> «Śpiąca królewna» (στα πολωνικά), και φαγητό στο Dawne Smaki (εφεδρικό)."
 },
 { id:"d20", tab:"Παρ 20", date:"2026-11-20", title:"Παρασκευή 20/11 · Ζωολογικός & χριστουγεννιάτικη αγορά", sub:"Ζωολογικός το πρωί, milk bar, ύπνος, και η πρώτη μέρα του Jarmark το βράδυ.",
-  places:["apt","centrum","wilenski","zoo","rusalka","pyzy","pkin","parksw","kopernik"],
+  places:["apt","centrum","wilenski","zoo","rusalka","hultaj","pyzy","pkin","parksw","kopernik"],
   tl:[
    ["8:30",'<span class="tag">Ⓜ️ μετακίνηση</span><b>M1</b> Centrum → Świętokrzyska, αλλαγή <b>M2</b> → <b>Dworzec Wileński</b> (3 στάσεις). Από εκεί τραμ ως <b>Park Praski / Ratuszowa-ZOO</b>, ή 10–15 λεπτά με τα πόδια μέσα από το Park Praski ('+link("https://zoo.waw.pl/wizyta-w-zoo/dojazdy","πρόσβαση")+').'],
    ["9:00–11:45",'<b>Ζωολογικός.</b> Υπολογίστε περίπου 2,5 ώρες. Χρησιμοποιήστε τα κλειστά κτίρια για ζέσταμα (ποια είναι ανοιχτά δεν ελέγχθηκε).<br>💶 Κάθε οικογένεια βγάζει οικογενειακό 3 ατόμων (90 zł) και το μωρό 1 zł: σύνολο περίπου <b>181 zł (≈41 €)</b>. '+link("https://zoo.waw.pl/wizyta-w-zoo/bilety","Τιμές")+' · '+link("https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο"),"key"],
@@ -477,7 +497,12 @@ var DAYS = [
    {t:"Εφεδρικό: Pyzy Flaki Gorące", h:'Brzeska 29/31, Praga · Δευτέρα–Σάββατο 12:00–22:00. Πύζες (πατατοκεφτέδες) και flaki (πατσάς) σε ρετρό στιλ.<div class="caveat">⚠️ Οι τιμές υπάρχουν μόνο στις online παραγγελίες ή στο Facebook. Η βαθμολογία δεν επαληθεύτηκε. Ο χώρος πιθανότατα είναι μικρός για 7 άτομα με καρότσι (δεν επιβεβαιώθηκε).</div><div class="btns"><a class="btn food" href="tel:+48606294499">📞 606 294 499</a></div><p>'+link("https://www.pyzyflakigorace.pl/menu-brzeska/","Μενού")+'</p>'},
    {t:"Βραδινό: περίπτερα του Jarmark", h:'Στο Jarmark υπάρχουν περίπτερα φαγητού (dzis.app). Οι τιμές του 2026 θα βγουν την ημέρα έναρξης.'}
   ],
-  weather:"<b>Αν βρέχει πολύ:</b> μικρότερη επίσκεψη στον ζωολογικό, ή Copernicus, που την Παρασκευή είναι ανοιχτό ως τις 20:00. Την αγορά την κόβετε σε 30–40 λεπτά."
+  opt:[
+   ["Παιδική χαρά του ζωολογικού","Μέσα στον ζωολογικό και μέσα στο εισιτήριο· δεν μετράει ως έξτρα έξοδος. Εκτίμηση 15–30 λεπτά, ύπαιθρος. Νοέμβριος 9:00–16:00. Το σαφάρι τρενάκι μόνο αν δουλεύει και το επιτρέπει ο καιρός· πληρώνεται έξτρα και δεν είναι δεδομένο στις 20/11. "+link("https://zoo.waw.pl/wizyta-w-zoo/plac-zabaw","Χαρά")+" · "+link("https://zoo.waw.pl/wizyta-w-zoo/inne-atrakcje","Άλλες ατραξιόν")+" · "+link("https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο")],
+   ["Hultajka","Floriańska 6, περίπου 3–5 λεπτά με τα πόδια από τη Rusałka (Floriańska 14). Προαιρετικά 30–60 λεπτά, μόνο αν δεν αργήσει ο ύπνος ή αν χωριστεί η παρέα. Κλειστός παιδοχώρος, πιο κατάλληλος για το μωρό και το μικρότερο παιδί· ο 10χρονος μπορεί να τον βρει μικρό. Δημοσιευμένο ωράριο Παρασκευής 10:00–20:00, με εισιτήριο. Την Παρασκευή ή αυτό ή το Neon Museum, όχι και τα δύο. "+link("https://hultajka.pl/cennik/","Εισιτήρια")+" · "+link("https://hultajka.pl/kontakt/","Επικοινωνία")],
+   ["Neon Museum","Έφυγε από την Τετάρτη. Την Παρασκευή είναι προαιρετική κλειστή εναλλακτική δίπλα στο Jarmark, όχι υποχρεωτική στάση. Τώρα μέσα στο PKiN, όχι σε παλιότερη διεύθυνση αλλού. Περίπου 5–10 λεπτά από την αγορά στο Plac Defilad. Εκτίμηση 45–60 λεπτά. Δημοσιευμένο ωράριο Παρασκευής 11:00–19:00, με εισιτήριο. Πιο πολύ εικόνες για τα μεγαλύτερα παιδιά. Ή αυτό ή η Hultajka. "+link("https://www.neonmuzeum.org/wizyta","Επίσκεψη")+" · "+link("https://pkin.pl/en/news-and-events/neon-museum/","PKiN")]
+  ],
+  weather:"<b>Αν βρέχει πολύ:</b> μικρότερη επίσκεψη στον ζωολογικό, ή Copernicus, που την Παρασκευή είναι ανοιχτό ως τις 20:00. Την αγορά την κόβετε σε 30–40 λεπτά. Προαιρετικά, αντί για την αγορά, το Neon Museum στο PKiN· όχι και Hultajka την ίδια μέρα."
 },
 { id:"d21", tab:"Σάβ 21", date:"2026-11-21", title:"Σάββατο 21/11 · Αναχώρηση", sub:"Πρωινό κοντά στο σπίτι, μετά αεροδρόμιο για την πτήση των 15:15. Η οικογένεια του Νίκου: GQ771 και μετά GQ216 για Ηράκλειο.", sky:true,
   places:["apt","pkin","srodm","airport"],
@@ -498,8 +523,8 @@ var DAYS = [
 /* ---------- Events ---------- */
 var EVENTS = [
  {t:"Jarmark Warszawski (2η χρονιά)", w:"Plac Defilad, μπροστά στο PKiN · ανοίγει Παρ 20/11/2026 11:00, ως 6/1/2027", b:[["ok","Είσοδος ελεύθερη"],["ok","Όλες οι ηλικίες"],["","Στο πρόγραμμα: Παρ 20 & Σάβ 21"]],
-  h:'Ωράριο στη σελίδα του διοργανωτή: Δευτέρα–Πέμπτη 11:00–21:00, <b>Παρασκευή–Σάββατο 11:00–22:00</b>, Κυριακή 11:00–21:00. Το dzis.app αναφέρει περίπτερα φαγητού, συναυλίες στη σκηνή, εργαστήρια, καρουζέλ, ρόδα και υπαίθριο σινεμά. Δεν βρέθηκε επίσημη τελετή έναρξης ή φωταγώγησης· το Miejscownik γράφει ότι οι τιμές και το πρόγραμμα του 2026 θα βγουν την ημέρα έναρξης.<div class="caveat">⚠️ Οι εξαιρέσεις ωραρίου στη σελίδα του διοργανωτή έχουν ακόμα ημερομηνίες του 2025.</div>',
-  l:[["https://www.jarmark.waw.pl/","jarmark.waw.pl"],["https://pik.warszawa.pl/inne/jarmark-bozonarodzeniowy-w-warszawie/","PIK Warszawa"],["https://dzis.app/wydarzenia/jarmark-bozonarodzeniowy-2026-w-warszawie-na-placu-defilad-plac-defilad-warszawa-2026-11-20","dzis.app"],["https://miejscownik.pl/blog/jarmark-bozonarodzeniowy-warszawa","Miejscownik"]]},
+  h:'Ωράριο στη σελίδα του διοργανωτή: Δευτέρα–Πέμπτη 11:00–21:00, <b>Παρασκευή–Σάββατο 11:00–22:00</b>, Κυριακή 11:00–21:00. Η επίσημη σελίδα επιβεβαιώνει την αγορά στο Plac Defilad, 20/11/2026–6/1/2027. Η αγορά στην Παλιά Πόλη / Barbakan δεν έχει επιβεβαιωμένες ημερομηνίες. Το dzis.app αναφέρει περίπτερα φαγητού, συναυλίες στη σκηνή, εργαστήρια, καρουζέλ, ρόδα και υπαίθριο σινεμά. Δεν βρέθηκε επίσημη τελετή έναρξης ή φωταγώγησης· το Miejscownik γράφει ότι οι τιμές και το πρόγραμμα του 2026 θα βγουν την ημέρα έναρξης.<div class="caveat">⚠️ Οι εξαιρέσεις ωραρίου στη σελίδα του διοργανωτή έχουν ακόμα ημερομηνίες του 2025.</div>',
+  l:[["https://www.jarmark.waw.pl/en/","jarmark.waw.pl"],["https://pik.warszawa.pl/inne/jarmark-bozonarodzeniowy-w-warszawie/","PIK Warszawa"],["https://dzis.app/wydarzenia/jarmark-bozonarodzeniowy-2026-w-warszawie-na-placu-defilad-plac-defilad-warszawa-2026-11-20","dzis.app"],["https://miejscownik.pl/blog/jarmark-bozonarodzeniowy-warszawa","Miejscownik"]]},
  {t:"Φωτεινός κήπος στο Park Świętokrzyski", w:"Βόρεια πλευρά του PKiN, ~800 μ. από το σπίτι", b:[["ok","Δωρεάν"],["","Ιδανικό για 6,5 & 10 μετά τις 16:00"],["no","Χωρίς ακριβή ημερομηνία/ωράριο"]],
   h:'Διαδραστικός κήπος φωτός όλο τον χρόνο: φωτεινά λουλούδια και πεταλούδες και ένα δρομάκι περίπου 50 μ. όπου οι εικόνες στο έδαφος αλλάζουν με την κίνηση. Η πόλη ανακοίνωσε άνοιγμα στα μέσα Οκτωβρίου 2026, χωρίς ακριβή ημερομηνία ή ωράριο. Ταιριάζει με την αγορά της Παρασκευής.',
   l:[["https://wot.waw.pl/project/tej-zimy-warszawa-opowie-swoja-historie-swiatlem-co-nowego-w-swiatecznej-iluminacji/","WOT"],["https://www.werandaweekend.pl/dzieje-sie/nowa-atrakcja-w-centrum-warszawy-park-swietokrzyski-zamieni-sie-w-interaktywny-ogrod-swiatla","WerandaWeekend"],["https://stooq.pl/n/?c=1&f=1826585&p=0","PAP/Stooq"]]},
@@ -519,7 +544,7 @@ var EVENTS = [
   l:[["https://zoo.waw.pl/en/visit-the-zoo/opening-hours","Ωράριο"],["https://zoo.waw.pl/wizyta-w-zoo/bilety","Τιμές"]]},
  {t:"Ταράτσα θέας PKiN, 30ός όροφος", w:"Καθημερινά 10:00–20:00 · χωρίς κρατήσεις", b:[["","Στο πρόγραμμα: Σάβ 21"],["no","Τιμή μικρών παιδιών ανεπιβεβαίωτη"]],
   h:'Σύμφωνα με αναζήτηση, κανονικό 30 zł και μειωμένο 25 zł.', l:[["https://pkin.pl/o-tarasie-widokowym/","pkin.pl"]]},
- {t:"Neon Museum (PKiN, 4ος όροφος)", w:"Ανελκυστήρας από το επίπεδο −1 · Δευ & Κυρ 11:00–18:00, Παρ 11:00–19:00", b:[["no","Εκτός προγράμματος"],["no","Ωράριο Τρ–Πέμ ανεπιβεβαίωτο"]],
+ {t:"Neon Museum (PKiN, 4ος όροφος)", w:"Ανελκυστήρας από το επίπεδο −1 · Δευ & Κυρ 11:00–18:00, Παρ 11:00–19:00", b:[["","Προαιρετικό: Παρ 20"],["no","Όχι την Τετάρτη"]],
   h:'Τιμές: 25 zł κανονικό, 18 zł μειωμένο, κάτω των 6 δωρεάν. Τρίτη–Πέμπτη η σελίδα δεν έδειξε ώρες στις 8/10· στις 4/10 η Τετάρτη έδειχνε 11:00–18:00.', l:[["https://www.neonmuzeum.org/visit-museum","neonmuzeum.org"]]},
  {t:"Pijalnia Czekolady E. Wedel (Szpitalna 8)", w:"Δευτέρα–Σάββατο 9:00–22:00 (δευτερεύουσα πηγή — ελέγξτε το)", b:[["","Στο πρόγραμμα: Τρ 17"]],
   h:'Το ιστορικό σοκολατοπωλείο της Wedel, 240 μ. από το διαμέρισμα. Ζεστή σοκολάτα για καλωσόρισμα.', l:[["https://gdziezjescwarszawa.com/miejsca/pijalnia-czekolady-e-wedel-szpitalna-8/","gdziezjescwarszawa"],["https://wedelpijalnie.pl/lokale","Επίσημη σελίδα"]]}
@@ -636,9 +661,16 @@ function skyCard(){
   s+='<div class="caveat">Τα ημερολόγια ήταν σε ώρα Ελλάδας, για τις ίδιες πτήσεις. Η GQ770 φαίνεται 12:40–15:15 και η GQ771 16:15–18:45. Τοπική ώρα Βαρσοβίας: προσγείωση 14:15, αναχώρηση 15:15. Η GQ211 (08:40–09:30) και η GQ216 (20:15–21:05) είναι ούτως ή άλλως σε αεροδρόμια της Ελλάδας.</div>';
   return s+"</div>";
 }
+function optCard(items){
+  var s='<div class="card optional"><div class="kicker">Προαιρετικά · όχι στο ωράριο</div>';
+  s+='<p class="mednote">Το πολύ <b>μία</b> έξτρα έξοδος τη μέρα. Η παρέα μπορεί να χωριστεί όσο κοιμάται το μωρό. Οι χρόνοι είναι εκτιμήσεις· ωράρια και πρόγραμμα να ξαναελεγχθούν.</p>';
+  items.forEach(function(it){s+='<p style="margin:.65rem 0 0"><b>'+it[0]+'</b><br>'+it[1]+'</p>';});
+  return s+'</div>';
+}
 function dayPanel(d,i){
   var s='<section class="panel" role="tabpanel" id="p-'+d.id+'"><h2 class="daytitle">'+d.title+'</h2><p class="daysub">'+d.sub+'</p>';
   s+='<div class="card"><h3>Πρόγραμμα</h3><ol class="timeline">'+d.tl.map(function(t){return '<li class="'+(t[2]||"")+'"><div class="t">'+t[0]+'</div><div class="what">'+t[1]+'</div></li>';}).join("")+'</ol></div>';
+  if(d.opt) s+=optCard(d.opt);
   if(d.sky) s+=skyCard();
   s+= d.rest? restCard(d.rest) : '<div class="card"><h3>🍽️ Φαγητό</h3><p style="margin:0">'+d.norest+'</p></div>';
   d.backups.forEach(function(b){s+='<details class="backup"><summary>'+b.t+'</summary><div class="inner">'+b.h+'</div></details>';});
@@ -652,7 +684,7 @@ function summaryPanel(){
             ["Πέμ 19","<b>Wilanów</b>, δωρεάν την Πέμπτη","<b>Restauracja Wilanów</b>","Επιστροφή πριν σκοτεινιάσει",2],
             ["Παρ 20","<b>Ζωολογικός</b> από 9:00","<b>Bar Mleczny Rusałka</b>","<b>Πρώτη μέρα Jarmark Warszawski</b>",3],
             ["Σάβ 21","Ταράτσα PKiN, βόλτα στην αγορά","— (αναχώρηση)","Αεροδρόμιο 12:15–12:30 · GQ771 15:15",4]];
-  var s='<section class="panel" role="tabpanel" id="p-summary"><h2 class="daytitle">Σύνοψη</h2><p class="daysub">Πάτα μια γραμμή για να πας στη μέρα.</p>';
+  var s='<section class="panel" role="tabpanel" id="p-summary"><h2 class="daytitle">Σύνοψη</h2><p class="daysub">Πάτα μια γραμμή για να πας στη μέρα. Τα προαιρετικά (Τετ–Παρ) δεν είναι στο ωράριο· το πολύ ένα τη μέρα.</p>';
   s+='<div class="card" style="overflow-x:auto"><table class="sum"><tr><th>Μέρα</th><th>Πρωί</th><th>Φαγητό</th><th>Απόγευμα</th></tr>'+rows.map(function(r){return '<tr data-go="'+r[4]+'"><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';}).join("")+'</table></div>';
   s+=skyCard();
   s+='<div class="card"><h3>💶 Κόστος φαγητού για 7 (εκτίμηση)</h3><ul style="margin:.3rem 0;padding-left:20px"><li>17/11 Mąka i Woda: 150–228 zł (≈34–52 €) για 6 κυρίως (6×25 ως 6×38 zł) από τον κατάλογο delivery, χωρίς ποτά· το μωρό μοιράζεται</li><li>18/11 Prodiż: 300–360 zł (≈69–82 €)</li><li>19/11 Restauracja Wilanów: 400–520 zł (≈92–119 €)</li><li>20/11 Rusałka: 150–200 zł (≈34–46 €)</li></ul><p style="margin:.4rem 0 0"><b>Σύνολο: περίπου 1.000–1.308 zł (≈229–299 €)</b> για τα τέσσερα γεύματα. Η Τρίτη είναι εκτίμηση από τιμές delivery, όχι λογαριασμός τραπεζιού.</p></div>';

@@ -200,6 +200,12 @@ html.unlocked #trip{display:block}
     🎟️ <b>Darmowy Listopad:</b> τον Νοέμβριο η είσοδος είναι δωρεάν στο <b>Zamek Królewski</b>, στα <b>Łazienki</b> και στο <b>Wilanów</b>.
     <div class="clock" id="clock"></div>
   </div>
+  <div class="card" id="nearhome">
+    <h3>Κοντά στο σπίτι</h3>
+    <p style="margin:.35rem 0"><b>Σούπερ μάρκετ.</b> <b>Biedronka</b>, Krucza 50, περίπου 100 μ. από το σπίτι (απέναντι στην Krucza). Τρίτη 17–Παρασκευή 20/11 ανοιχτό 24ώρο· Σάββατο 21/11 ως τις 23:30 (Κυριακή κλειστό). Δίπλα, στην Krucza 46, υπάρχει και <b>Żabka</b> (μικρό μίνι μάρκετ, Δευτέρα–Σάββατο 06:00–23:00) για γρήγορα ψώνια.</p>
+    <p style="margin:.35rem 0"><b>Φαρμακείο.</b> <b>Apteka Kliniczna</b>, Krucza 51, στο ίδιο κτίριο με το σπίτι. Δευτέρα–Παρασκευή 08:00–22:00, Σάββατο 09:00–20:00. ☎ +48 22 827 92 72. 24ωρο φαρμακείο: <b>Apteka WAWA</b> μέσα στον σταθμό μετρό Centrum (περίπου 400 μ.), ☎ +48 22 526 55 09.</p>
+    <p style="margin:.35rem 0 0"><b>Φούρνος.</b> <b>Galeria Wypieków Lubaszka</b>, Al. Jerozolimskie 29, περίπου 150 μ. (στη γωνία Krucza/Jerozolimskie). Ψωμί προζυμιού, γλυκά και αλμυρά. Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–17:00. Εναλλακτική στον ίδιο δρόμο: <b>Piekarnia Grzybki</b>, Krucza 41/43 (Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–15:00).</p>
+  </div>
 </div>
 
 <nav class="tabs" aria-label="Μέρες">
@@ -219,6 +225,7 @@ html.unlocked #trip{display:block}
         <span><span class="dot" style="background:#8a3ffc"></span>Φαγητό</span>
         <span><span class="dot" style="background:#4b8bd6"></span>Μετακίνηση</span>
         <span><span class="dot" style="background:#8c8c8c"></span>Εφεδρικό</span>
+        <span><span class="dot" style="background:#2f7d5b"></span>Καθημερινά</span>
       </div>
     </div>
     <div id="map" role="region" aria-label="Χάρτης"></div>
@@ -234,7 +241,7 @@ html.unlocked #trip{display:block}
 <script>
 "use strict";
 /* ---------- Places (coordinates from OpenStreetMap / Nominatim) ---------- */
-var C = {home:"#b5462f", act:"#e08a3c", food:"#8a3ffc", move:"#4b8bd6", backup:"#8c8c8c"};
+var C = {home:"#b5462f", act:"#e08a3c", food:"#8a3ffc", move:"#4b8bd6", backup:"#8c8c8c", daily:"#2f7d5b"};
 var P = {
   apt:{n:"Διαμέρισμα (Krucza 51, κατά προσέγγιση)", ll:[52.2312667,21.0157956], k:"home", i:"🏠", q:"Krucza 51, Warszawa",
        d:"Fashionable City Center Apartment (Noclegi Renters). Η διεύθυνση Krucza 51 είναι από τρίτους ιστότοπους — επιβεβαιώστε τη στην κράτηση."},
@@ -242,6 +249,9 @@ var P = {
   srodm:{n:"Σταθμός Warszawa Śródmieście (SKM)", ll:[52.2294024,21.0075880], k:"move", i:"🚆", q:"Warszawa Śródmieście, stacja", d:"SKM S2 από/προς αεροδρόμιο, ~22′. Περίπου 600 μ. από το σπίτι."},
   centrum:{n:"Μετρό Centrum (M1)", ll:[52.2304781,21.0103690], k:"move", i:"Ⓜ️", q:"Metro Centrum, Warszawa", d:"Περίπου 300 μ. από το σπίτι."},
   wedel:{n:"Pijalnia Czekolady E. Wedel", ll:[52.2333859,21.0146763], k:"act", i:"☕", q:"Pijalnia Czekolady E. Wedel, Szpitalna 8, Warszawa", d:"Szpitalna 8, 240 μ. από το σπίτι. Ζεστή σοκολάτα."},
+  biedronka:{n:"Biedronka", ll:[52.231378,21.017240], k:"daily", i:"🛒", q:"Biedronka, Krucza 50, Warszawa", d:"Krucza 50, ~100 μ. από το σπίτι, απέναντι. Τρ 17–Παρ 20/11 ανοιχτό 24ώρο· Σάβ 21/11 ως τις 23:30. Κυριακή κλειστό."},
+  apteka:{n:"Apteka Kliniczna", ll:[52.231719,21.015585], k:"daily", i:"💊", q:"Apteka Kliniczna, Krucza 51, Warszawa", d:"Krucza 51, στο ίδιο κτίριο με το σπίτι. Δευ–Παρ 08:00–22:00, Σάβ 09:00–20:00. ☎ +48 22 827 92 72"},
+  lubaszka:{n:"Galeria Wypieków Lubaszka", ll:[52.230195,21.014567], k:"daily", i:"🍞", q:"Galeria Wypieków Lubaszka, Aleje Jerozolimskie 29, Warszawa", d:"Al. Jerozolimskie 29, ~150 μ., γωνία Krucza/Jerozolimskie. Ψωμί προζυμιού, γλυκά και αλμυρά. Δευ–Παρ 06:30–20:00, Σάβ 07:00–17:00."},
   parksw:{n:"Φωτεινός κήπος, Park Świętokrzyski", ll:[52.2338214,21.0047204], k:"act", i:"✨", q:"Park Świętokrzyski, Warszawa", d:"Δωρεάν διαδραστικός κήπος φωτός, ~800 μ. Ακριβής ημερομηνία/ωράριο δεν ανακοινώθηκαν."},
   maka:{n:"Mąka i Woda", ll:[52.2323745,21.0164944], k:"food", i:"🍽️", q:"Mąka i Woda Chmielna 13A Warszawa", d:"Chmielna 13A. Ναπολιτάνικη πίτσα και φρέσκα ζυμαρικά. Δείπνο Τρ 17/11 17:30. ☎ +48 22 505 91 87"},
   bambino:{n:"Bar Mleczny Bambino (εφεδρικό)", ll:[52.2267934,21.0175602], k:"backup", i:"🥣", q:"Bar Mleczny Bambino, Hoża 19, Warszawa", d:"Hoża 19, ~500 μ. Δευ–Παρ 8:00–20:00."},
@@ -378,6 +388,12 @@ var PLACE_LINKS=[
  ["Φιλαρμονικής","Filharmonia Narodowa, Warszawa"],
  ["Hoża 19","bambino"],
  ["Krucza 51","apt"],
+ ["Galeria Wypieków Lubaszka","lubaszka"],
+ ["Piekarnia Grzybki","Piekarnia Grzybki, Krucza 41/43, Warszawa"],
+ ["Apteka Kliniczna","apteka"],
+ ["Apteka WAWA","Apteka WAWA, Metro Centrum, Warszawa"],
+ ["Biedronka","biedronka"],
+ ["Żabka","Żabka, Krucza 46, Warszawa"],
  ["Krucza 21","bambino"],
  ["Dobra 42","harvest"],
  ["Ηράκλειο","Nikos Kazantzakis Airport, Heraklion"],
@@ -765,6 +781,8 @@ var panels=document.getElementById("panels");
 panels.innerHTML = linkPlaces(DAYS.map(dayPanel).join("")+summaryPanel()+eventsPanel()+checkPanel());
 var hero=document.querySelector("#trip header.hero");
 if(hero) hero.innerHTML=linkPlaces(hero.innerHTML);
+var near=document.getElementById("nearhome");
+if(near) near.innerHTML=linkPlaces(near.innerHTML);
 var tabrow=document.getElementById("tabrow");
 tabrow.innerHTML = TABS.map(function(t,i){return '<button class="tab" role="tab" id="t-'+t.id+'" aria-controls="p-'+t.id+'" aria-selected="false" data-i="'+i+'">'+t.label+'<small>'+t.small+'</small></button>';}).join("");
 

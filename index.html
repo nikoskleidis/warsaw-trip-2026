@@ -83,6 +83,15 @@ details.backup summary::-webkit-details-marker{display:none}
 details.backup summary:before{content:"＋";margin-right:8px;color:var(--accent)}
 details[open].backup summary:before{content:"－"}
 details.backup .inner{padding-bottom:12px;font-size:.95rem}
+details.nearhome summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;min-height:48px}
+details.nearhome summary::-webkit-details-marker{display:none}
+details.nearhome summary::marker{content:""}
+details.nearhome summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+details.nearhome .nt{display:block;font-size:1.08rem;font-weight:700}
+details.nearhome .nh{display:block;margin-top:2px;font-weight:400;font-size:.85rem;color:var(--muted)}
+details.nearhome .chev{margin-left:auto;flex:none;width:9px;height:9px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg);transform-origin:center}
+details.nearhome[open] .chev{transform:rotate(-135deg)}
+details.nearhome .inner{padding-top:4px}
 .optional{border-left:6px solid var(--accent-2)}
 .optional .kicker{font-size:.8rem;color:var(--accent-2);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .weather{border-left:6px solid #4b8bd6}
@@ -200,12 +209,20 @@ html.unlocked #trip{display:block}
     🎟️ <b>Darmowy Listopad:</b> τον Νοέμβριο η είσοδος είναι δωρεάν στο <b>Zamek Królewski</b>, στα <b>Łazienki</b> και στο <b>Wilanów</b>.
     <div class="clock" id="clock"></div>
   </div>
-  <div class="card" id="nearhome">
-    <h3>Κοντά στο σπίτι</h3>
-    <p style="margin:.35rem 0"><b>Σούπερ μάρκετ.</b> <b>Biedronka</b>, Krucza 50, περίπου 100 μ. από το σπίτι (απέναντι στην Krucza). Τρίτη 17–Παρασκευή 20/11 ανοιχτό 24ώρο· Σάββατο 21/11 ως τις 23:30 (Κυριακή κλειστό). Δίπλα, στην Krucza 46, υπάρχει και <b>Żabka</b> (μικρό μίνι μάρκετ, Δευτέρα–Σάββατο 06:00–23:00) για γρήγορα ψώνια.</p>
-    <p style="margin:.35rem 0"><b>Φαρμακείο.</b> <b>Apteka Kliniczna</b>, Krucza 51, στο ίδιο κτίριο με το σπίτι. Δευτέρα–Παρασκευή 08:00–22:00, Σάββατο 09:00–20:00. ☎ +48 22 827 92 72. 24ωρο φαρμακείο: <b>Apteka WAWA</b> μέσα στον σταθμό μετρό Centrum (περίπου 400 μ.), ☎ +48 22 526 55 09.</p>
-    <p style="margin:.35rem 0 0"><b>Φούρνος.</b> <b>Galeria Wypieków Lubaszka</b>, Al. Jerozolimskie 29, περίπου 150 μ. (στη γωνία Krucza/Jerozolimskie). Ψωμί προζυμιού, γλυκά και αλμυρά. Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–17:00. Εναλλακτική στον ίδιο δρόμο: <b>Piekarnia Grzybki</b>, Krucza 41/43 (Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–15:00).</p>
-  </div>
+  <details class="card nearhome" id="nearhome">
+    <summary>
+      <span>
+        <span class="nt">Κοντά στο σπίτι</span>
+        <span class="nh">Σούπερ μάρκετ, φαρμακείο, φούρνος</span>
+      </span>
+      <span class="chev" aria-hidden="true"></span>
+    </summary>
+    <div class="inner">
+      <p style="margin:.35rem 0"><b>Σούπερ μάρκετ.</b> <b>Biedronka</b>, Krucza 50, περίπου 100 μ. από το σπίτι (απέναντι στην Krucza). Τρίτη 17–Παρασκευή 20/11 ανοιχτό 24ώρο· Σάββατο 21/11 ως τις 23:30 (Κυριακή κλειστό). Δίπλα, στην Krucza 46, υπάρχει και <b>Żabka</b> (μικρό μίνι μάρκετ, Δευτέρα–Σάββατο 06:00–23:00) για γρήγορα ψώνια.</p>
+      <p style="margin:.35rem 0"><b>Φαρμακείο.</b> <b>Apteka Kliniczna</b>, Krucza 51, στο ίδιο κτίριο με το σπίτι. Δευτέρα–Παρασκευή 08:00–22:00, Σάββατο 09:00–20:00. ☎ +48 22 827 92 72. 24ωρο φαρμακείο: <b>Apteka WAWA</b> μέσα στον σταθμό μετρό Centrum (περίπου 400 μ.), ☎ +48 22 526 55 09.</p>
+      <p style="margin:.35rem 0 0"><b>Φούρνος.</b> <b>Galeria Wypieków Lubaszka</b>, Al. Jerozolimskie 29, περίπου 150 μ. (στη γωνία Krucza/Jerozolimskie). Ψωμί προζυμιού, γλυκά και αλμυρά. Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–17:00. Εναλλακτική στον ίδιο δρόμο: <b>Piekarnia Grzybki</b>, Krucza 41/43 (Δευτέρα–Παρασκευή 06:30–20:00, Σάββατο 07:00–15:00).</p>
+    </div>
+  </details>
 </div>
 
 <nav class="tabs" aria-label="Μέρες">

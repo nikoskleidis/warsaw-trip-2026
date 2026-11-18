@@ -303,7 +303,6 @@ var P = {
   hultaj:{n:"Hultajka", ll:[52.2521504,21.0332728], k:"act", i:"🧸", q:"Hultajka Floriańska 6 Warszawa", d:"Floriańska 6, κοντά στη Rusałka. Μία επιλογή του απογεύματος της Πέμπτης. Δευ–Σάβ 10:00–20:00."},
   wedelfab:{n:"Muzeum Fabryka Czekolady E. Wedel", ll:[52.2461639,21.0510634], k:"act", i:"🍫", q:"Muzeum Fabryka Czekolady E. Wedel aleja Emila Wedla 5 Warszawa", d:"aleja Emila Wedla 5, είσοδος από Jeziorko Kamionkowskie. Παρασκευή 10:00–20:00."},
   iluzja:{n:"Muzeum Świat Iluzji", ll:[52.2494363,21.0116788], k:"act", i:"🪞", q:"Muzeum Świat Iluzji Rynek Starego Miasta 21 Warszawa", d:"Rynek Starego Miasta 21, 1ος όροφος. Παρασκευή 9:00–20:00."},
-  domki:{n:"Muzeum Domków Lalek", ll:[52.2481615,21.0098872], k:"act", i:"🪆", q:"Muzeum Domków Lalek Gier i Zabawek Podwale 15 Warszawa", d:"Podwale 15, Pałac Bazylianów. Παρασκευή 9:00–19:00, τελευταία είσοδος 18:30."},
   prl:{n:"Muzeum Życia w PRL", ll:[52.2234564,21.0164192], k:"backup", i:"📺", q:"Muzeum Życia w PRL Piękna 28/34 Warszawa", d:"Piękna 28/34. Εφεδρικό Παρασκευής, 12:00–20:00."},
   arcade:{n:"Warsaw Arcade Museum", ll:[52.1945427,20.9254207], k:"backup", i:"🎮", q:"Warsaw Arcade Museum Aleje Jerozolimskie 200 Warszawa", d:"Al. Jerozolimskie 200. Εφεδρικό Παρασκευής, 14:00–22:00."},
   smartkids:{n:"Smart Kids Planet", ll:[52.2322765,20.9908312], k:"backup", i:"🎈", q:"Smart Kids Planet Fabryka Norblina Żelazna 51/53 Warszawa", d:"Fabryka Norblina, Żelazna 51/53. Παιδότοπος 0–10. Παρασκευή 9:00–20:00."},
@@ -386,8 +385,6 @@ var PLACE_LINKS=[
  ["Fabryka Czekolady","wedelfab"],
  ["Muzeum Świat Iluzji","iluzja"],
  ["Świat Iluzji","iluzja"],
- ["Muzeum Domków Lalek, Gier i Zabawek","domki"],
- ["Muzeum Domków Lalek","domki"],
  ["Muzeum Życia w PRL","prl"],
  ["Warsaw Arcade Museum","arcade"],
  ["Smart Kids Planet","smartkids"],
@@ -562,17 +559,17 @@ var DAYS = [
   ],
   weather:"<b>Αν βρέχει:</b> μικρότερη επίσκεψη στον ζωολογικό. Το απόγευμα είναι ήδη μέσα: Hultajka, Neon ή POLIN."
 },
-{ id:"d20", tab:"Παρ 20", date:"2026-11-20", title:"Παρασκευή 20/11 · Σοκολάτα Wedel, Παλιά Πόλη & χριστουγεννιάτικη αγορά", sub:"Fabryka Czekolady, Pyzy, δύο μουσεία στην Παλιά Πόλη, Jarmark. Όλοι μαζί. Το μωρό κοιμάται στο καρότσι.",
-  places:["apt","centrum","wedelfab","pyzy","iluzja","domki","pkin","parksw","lalka","prl","arcade","smartkids"],
+{ id:"d20", tab:"Παρ 20", date:"2026-11-20", title:"Παρασκευή 20/11 · Σοκολάτα Wedel, Παλιά Πόλη & χριστουγεννιάτικη αγορά", sub:"Fabryka Czekolady, Pyzy, Świat Iluzji στην Παλιά Πόλη, Jarmark. Όλοι μαζί. Το μωρό κοιμάται στο καρότσι.",
+  places:["apt","centrum","wedelfab","pyzy","iluzja","pkin","parksw","lalka","prl","arcade","smartkids"],
   tl:[
    ["~9:15",'<span class="tag">🚇 μετακίνηση</span>Προς το <b>Muzeum Fabryka Czekolady E. Wedel</b> (aleja Emila Wedla 5, είσοδος από το Jeziorko Kamionkowskie, κοντά στο Stadion Narodowy). <b>Εκτίμηση</b> 20–25 λεπτά: <b>M2</b> ως Stadion Narodowy ή τραμ και περπάτημα. '+link("https://www.google.com/maps/dir/?api=1&origin=Centrum%2C%20Warszawa&destination=aleja%20Emila%20Wedla%205%2C%20Warszawa&travelmode=transit","Διαδρομή")+"."],
    ["10:00–11:30",'<b>Muzeum Fabryka Czekolady E. Wedel</b>, όλοι μαζί. Παρασκευή 10:00–20:00. Ξενάγηση περίπου 90 λεπτά με δοκιμή· την Παρασκευή υπάρχουν και αγγλικές. Είσοδος σε γκρουπ ανά 15 λεπτά, με κράτηση ώρας online. Φιλικό σε καρότσι: ανελκυστήρας, ράμπες, χώρος αλλαγής. Τιμές ως 31/12/2026: κανονικό 70 zł, μειωμένο 55 zł, οικογενειακό 59 zł το άτομο, κάτω των 2 δωρεάν. '+link("https://fabrykaczekolady.pl/zaplanuj-wizyte","Επίσκεψη"),"key"],
    ["~12:00–13:00",'<span class="tag">🍽️ φαγητό</span><b>Pyzy Flaki Gorące</b> (Brzeska 29/31, Praga). Δευτέρα–Σάββατο 12:00–22:00, άρα ανοιχτό Παρασκευή μεσημέρι.',"meal"],
    ["~13:20",'<span class="tag">🚌 μετακίνηση</span>Προς την <b>Παλιά Πόλη</b>. <b>Εκτίμηση</b>, όχι ελεγμένο δρομολόγιο. '+link("https://www.google.com/maps/dir/?api=1&origin=Brzeska%2C%20Warszawa&destination=Rynek%20Starego%20Miasta%2021%2C%20Warszawa&travelmode=transit","Διαδρομή")+"."],
    ["~13:45–14:45",'<b>Muzeum Świat Iluzji</b>, Rynek Starego Miasta 21, 1ος όροφος, όλοι μαζί, 30–60 λεπτά. Παρασκευή 9:00–20:00. Κανονικό 44 zł, 7–18 ετών 34 zł, 4–6 ετών 25 zł, ως 3 ετών δωρεάν, οικογενειακό 2+2 125 zł / 2+3 145 zł. Online συνιστάται. Επίσημα δεν είναι προσβάσιμο σε αμαξίδιο: το καρότσι μένει στο βεστιάριο ή στα ντουλάπια κάτω. Δεν χωρίζετε. '+link("https://swiatiluzji.pl/cennik/","Τιμές"),"key"],
-   ["~15:00–16:15",'<b>Muzeum Domków Lalek, Gier i Zabawek</b>, Podwale 15 (Pałac Bazylianów, πύλη «FRYDERYK»), όλοι μαζί. Παρασκευή 9:00–19:00, τελευταία είσοδος 18:30. 42 zł, μειωμένο 30 zł (μαθητές), οικογενειακό 120 zł για 4, ως 100 εκ. δωρεάν. Χωρίς κράτηση. Το καρότσι μένει στο χολ· ανελκυστήρας ή ράμπα κατόπιν τηλεφώνου 797 723 029. Τα εκθέματα δεν τα αγγίζετε. '+link("https://www.muzeumdomkow.pl/zaplanuj-wizyte","Επίσκεψη"),"key"],
-   ["~16:30",'<span class="tag">🚌 μετακίνηση</span>Προς το Plac Defilad. <b>Εκτίμηση</b> 15–25 λεπτά. '+link("https://www.google.com/maps/dir/?api=1&origin=Podwale%2015%2C%20Warszawa&destination=Plac%20Defilad%2C%20Warszawa&travelmode=transit","Διαδρομή")+"."],
-   ["17:00–19:30",'<b>Jarmark Warszawski</b> στο Plac Defilad. Ανοίγει Παρασκευή 20/11 στις 11:00 και κλείνει στις 22:00. Μείνετε ως περίπου 19:00–19:30 αν έχετε όρεξη. Ο <b>φωτεινός κήπος</b> στο διπλανό Park Świętokrzyski είναι προαιρετικός. '+link("https://www.jarmark.waw.pl/en/","Ωράριο αγοράς"),"key"]
+   ["~14:45–15:30",'<b>Παλιά Πόλη</b>, όλοι μαζί, μικρή βόλτα μετά το μουσείο: <b>Rynek Starego Miasta</b> και <b>Plac Zamkowy</b>, αργά, με καρότσι.'],
+   ["~15:30",'<span class="tag">🚌 μετακίνηση</span>Προς το Plac Defilad. <b>Εκτίμηση</b> 15–25 λεπτά. '+link("https://www.google.com/maps/dir/?api=1&origin=Rynek%20Starego%20Miasta%2C%20Warszawa&destination=Plac%20Defilad%2C%20Warszawa&travelmode=transit","Διαδρομή")+"."],
+   ["16:00–19:30",'<b>Jarmark Warszawski</b> στο Plac Defilad. Ανοίγει Παρασκευή 20/11 στις 11:00 και κλείνει στις 22:00. Μείνετε ως περίπου 19:00–19:30 αν έχετε όρεξη. Ο <b>φωτεινός κήπος</b> στο διπλανό Park Świętokrzyski είναι προαιρετικός. '+link("https://www.jarmark.waw.pl/en/","Ωράριο αγοράς"),"key"]
   ],
   rest:{ kicker:"Μεσημεριανό της ημέρας · 12:00", name:"Pyzy Flaki Gorące", url:"https://www.pyzyflakigorace.pl/menu-brzeska/", addr:"Brzeska 29/31, Praga", place:"pyzy",
     stats:["🕐 Δευ–Σάβ 12:00–22:00","📍 Praga"],
@@ -591,7 +588,7 @@ var DAYS = [
    ["Warsaw Arcade Museum","Εφεδρικό, Al. Jerozolimskie 200. Παρασκευή 14:00–22:00. 1 ώρα 70/50 zł (μειωμένο ως 18 ετών), ως 4 ετών δωρεάν. Περίπου 30 λεπτά από το κέντρο. "+link("https://warsawarcademuseum.com/","Site")],
    ["Smart Kids Planet","Εφεδρικό, παιδότοπος 0–10, Fabryka Norblina, Żelazna 51/53. Παρασκευή 9:00–20:00, κράτηση online. "+link("https://smartkidsplanet.pl/warszawa/cennik/","Τιμές")]
   ],
-  weather:"<b>Αν βρέχει:</b> η μέρα είναι ήδη μέσα (σοκολάτα, Pyzy, δύο μουσεία). Την αγορά την κόβετε σε 30–40 λεπτά."
+  weather:"<b>Αν βρέχει:</b> η μέρα είναι ήδη μέσα (σοκολάτα, Pyzy, Świat Iluzji). Την αγορά την κόβετε σε 30–40 λεπτά."
 },
 { id:"d21", tab:"Σάβ 21", date:"2026-11-21", title:"Σάββατο 21/11 · Αναχώρηση", sub:"Πρωινό κοντά στο σπίτι, μετά αεροδρόμιο για την πτήση των 15:15. Η οικογένεια του Νίκου: GQ771 και μετά GQ216 για Ηράκλειο.", sky:true,
   places:["apt","pkin","srodm","airport"],
